@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PDF to PowerPoint Converter</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/static/style.css" />
+  </head>
+
+  <style>
+    /* Global Styles */
+    :root {
+      --primary-color: #ff4565;
+      --secondary-color: #6c63ff;
+      --dark-color: #2d3748;
+      --light-color: #f7fafc;
+      --gray-color: #a0aec0;
+      --success-color: #48bb78;
+      --warning-color: #ed8936;
+      --danger-color: #f56565;
+      --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      --transition: all 0.3s ease;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: "Roboto", sans-serif;
+      line-height: 1.6;
+      color: var(--dark-color);
+      background-color: #f5f7fa;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* Header Styles */
+    header {
+      background-color: white;
+      box-shadow: var(--shadow);
+      padding: 15px 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    header .container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo h1 {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--primary-color);
+    }
+
+    .logo h1 span {
+      color: var(--secondary-color);
+    }
+
+    .logo p {
+      font-size: 12px;
+      color: var(--gray-color);
+      margin-top: -5px;
+    }
+
+    nav ul {
+      display: flex;
+      list-style: none;
+    }
+
+    nav ul li {
+      margin-left: 20px;
+    }
+
+    nav ul li a {
+      text-decoration: none;
+      color: var(--dark-color);
+      font-weight: 500;
+      transition: var(--transition);
+    }
+
+    nav ul li a:hover {
+      color: var(--primary-color);
+    }
+
+    nav ul li a.active {
+      color: var(--primary-color);
+      font-weight: 700;
+    }
+
+    .auth-buttons .btn-login {
+      background: none;
+      border: 1px solid var(--primary-color);
+      color: var(--primary-color);
+      padding: 8px 15px;
+      border-radius: 4px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: var(--transition);
+      margin-right: 10px;
+    }
+
+    .auth-buttons .btn-login:hover {
+      background-color: rgba(255, 69, 101, 0.1);
+    }
+
+    .auth-buttons .btn-signup {
+      background-color: var(--primary-color);
+      border: none;
+      color: white;
+      padding: 8px 15px;
+      border-radius: 4px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .auth-buttons .btn-signup:hover {
+      background-color: #e03c5c;
+    }
+
+    /* Main Content Styles */
+    main {
+      padding: 40px 0;
+    }
+
+    .converter-container {
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: var(--shadow);
+      padding: 40px;
+      text-align: center;
+    }
+
+    .converter-container h2 {
+      font-size: 32px;
+      margin-bottom: 10px;
+      color: var(--dark-color);
+    }
+
+    .converter-container .subtitle {
+      color: var(--gray-color);
+      margin-bottom: 30px;
+      font-size: 16px;
+    }
+
+    /* Upload Area Styles */
+    .upload-area {
+      border: 2px dashed var(--gray-color);
+      border-radius: 8px;
+      padding: 40px 20px;
+      margin-bottom: 30px;
+      transition: var(--transition);
+      cursor: pointer;
+    }
+
+    .upload-area.highlight {
+      border-color: var(--primary-color);
+      background-color: rgba(255, 69, 101, 0.05);
+    }
+
+    .upload-icon {
+      font-size: 48px;
+      color: var(--gray-color);
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    .upload-icon i {
+      transition: var(--transition);
+    }
+
+    .upload-area:hover .upload-icon i {
+      color: var(--primary-color);
+    }
+
+    .upload-area h3 {
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+
+    .upload-area p {
+      color: var(--gray-color);
+      margin-bottom: 20px;
+    }
+
+    .btn-select {
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 4px;
+      font-size: 16px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: var(--transition);
+      margin-bottom: 20px;
+    }
+
+    .btn-select:hover {
+      background-color: #e03c5c;
+      transform: translateY(-2px);
+    }
+
+    .cloud-services {
+      margin-top: 20px;
+    }
+
+    .cloud-services p {
+      color: var(--gray-color);
+      margin-bottom: 10px;
+    }
+
+    .cloud-icons {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+    }
+
+    .cloud-btn {
+      background-color: white;
+      border: 1px solid var(--gray-color);
+      color: var(--dark-color);
+      padding: 8px 15px;
+      border-radius: 4px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .cloud-btn:hover {
+      border-color: var(--primary-color);
+      color: var(--primary-color);
+    }
+
+    .cloud-btn i {
+      font-size: 16px;
+    }
+
+    /* Progress Bar Styles */
+    .progress-container {
+      margin-bottom: 30px;
+    }
+
+    .progress-bar {
+      height: 10px;
+      background-color: #e2e8f0;
+      border-radius: 5px;
+      margin-bottom: 15px;
+      overflow: hidden;
+    }
+
+    .progress {
+      height: 100%;
+      background-color: var(--primary-color);
+      width: 0;
+      transition: width 0.3s ease;
+    }
+
+    .progress-text {
+      color: var(--gray-color);
+      font-size: 14px;
+    }
+
+    /* Result Container Styles */
+    .result-container {
+      margin-bottom: 30px;
+    }
+
+    .result-icon {
+      font-size: 60px;
+      color: var(--success-color);
+      margin-bottom: 20px;
+    }
+
+    .result-container h3 {
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+
+    .result-container p {
+      color: var(--gray-color);
+      margin-bottom: 20px;
+    }
+
+    .btn-download {
+      background-color: var(--success-color);
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 4px;
+      font-size: 16px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: var(--transition);
+      margin-right: 10px;
+    }
+
+    .btn-download:hover {
+      background-color: #3aa76d;
+      transform: translateY(-2px);
+    }
+
+    .btn-convert-another {
+      background-color: white;
+      color: var(--dark-color);
+      border: 1px solid var(--gray-color);
+      padding: 12px 24px;
+      border-radius: 4px;
+      font-size: 16px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .btn-convert-another:hover {
+      border-color: var(--primary-color);
+      color: var(--primary-color);
+      transform: translateY(-2px);
+    }
+
+    /* Features Styles */
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+      margin-top: 40px;
+    }
+
+    .feature {
+      text-align: center;
+      padding: 30px 20px;
+      border-radius: 8px;
+      background-color: white;
+      box-shadow: var(--shadow);
+      transition: var(--transition);
+    }
+
+    .feature:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .feature i {
+      font-size: 40px;
+      color: var(--primary-color);
+      margin-bottom: 20px;
+    }
+
+    .feature h4 {
+      font-size: 20px;
+      margin-bottom: 15px;
+    }
+
+    .feature p {
+      color: var(--gray-color);
+    }
+
+    /* Footer Styles */
+    footer {
+      background-color: var(--dark-color);
+      color: white;
+      padding: 50px 0 20px;
+    }
+
+    .footer-links {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 30px;
+      margin-bottom: 30px;
+    }
+
+    .footer-column h4 {
+      font-size: 18px;
+      margin-bottom: 20px;
+      color: white;
+    }
+
+    .footer-column ul {
+      list-style: none;
+    }
+
+    .footer-column ul li {
+      margin-bottom: 10px;
+    }
+
+    .footer-column ul li a {
+      color: var(--gray-color);
+      text-decoration: none;
+      transition: var(--transition);
+    }
+
+    .footer-column ul li a:hover {
+      color: white;
+    }
+
+    .social-icons {
+      display: flex;
+      gap: 15px;
+    }
+
+    .social-icons a {
+      color: white;
+      background-color: rgba(255, 255, 255, 0.1);
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: var(--transition);
+    }
+
+    .social-icons a:hover {
+      background-color: var(--primary-color);
+      transform: translateY(-3px);
+    }
+
+    .copyright {
+      text-align: center;
+      padding-top: 20px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      color: var(--gray-color);
+      font-size: 14px;
+    }
+
+    /* Responsive Styles */
+    @media (max-width: 768px) {
+      header .container {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      nav ul {
+        margin: 20px 0;
+        justify-content: center;
+      }
+
+      .auth-buttons {
+        margin-top: 10px;
+      }
+
+      .converter-container {
+        padding: 30px 20px;
+      }
+
+      .upload-icon {
+        font-size: 36px;
+        gap: 10px;
+      }
+
+      .cloud-icons {
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .btn-download,
+      .btn-convert-another {
+        display: block;
+        width: 100%;
+        margin-bottom: 10px;
+      }
+
+      .btn-download {
+        margin-right: 0;
+      }
+    }
+  </style>
+
+  <body>
+    <header>
+      <div class="container">
+        <div class="logo">
+          <h1>PDF<span>toPPT</span></h1>
+          <p>Convert PDF to PowerPoint with ease</p>
+        </div>
+        <nav>
+          <ul>
+            <li><a href="#" class="active">PDF to PPT</a></li>
+            <li><a href="#">Tools</a></li>
+            <li><a href="#">Pricing</a></li>
+            <li><a href="#">Help</a></li>
+          </ul>
+        </nav>
+        <div class="auth-buttons">
+          <button class="btn-login">Log In</button>
+          <button class="btn-signup">Sign Up</button>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <div class="container">
+        <div class="converter-container">
+          <h2>Convert PDF to PowerPoint</h2>
+          <p class="subtitle">
+            The best free online PDF to PowerPoint converter
+          </p>
+
+          <div class="upload-area" id="uploadArea">
+            <div class="upload-icon">
+              <i class="fas fa-file-pdf"></i>
+              <i class="fas fa-arrow-right"></i>
+              <i class="fas fa-file-powerpoint"></i>
+            </div>
+            <h3>Select PDF file</h3>
+            <p>or drag and drop PDF here</p>
+            <input
+              type="file"
+              id="fileInput"
+              accept=".pdf"
+              style="display: none"
+            />
+            <button class="btn-select" id="selectFileBtn">
+              Select PDF File
+            </button>
+            <div class="cloud-services">
+              <p>Import from:</p>
+              <div class="cloud-icons">
+                <button class="cloud-btn" id="dropboxBtn">
+                  <i class="fab fa-dropbox"></i> Dropbox
+                </button>
+                <button class="cloud-btn" id="driveBtn">
+                  <i class="fab fa-google-drive"></i> Google Drive
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="progress-container"
+            id="progressContainer"
+            style="display: none"
+          >
+            <div class="progress-bar">
+              <div class="progress" id="progressBar"></div>
+            </div>
+            <p class="progress-text" id="progressText">
+              Converting your PDF to PowerPoint...
+            </p>
+          </div>
+
+          <div
+            class="result-container"
+            id="resultContainer"
+            style="display: none"
+          >
+            <div class="result-icon">
+              <i class="fas fa-check-circle"></i>
+            </div>
+            <h3>Conversion complete!</h3>
+            <p>Your PowerPoint file is ready to download</p>
+            <button class="btn-download" id="downloadBtn">
+              Download PowerPoint
+            </button>
+            <button class="btn-convert-another" id="convertAnotherBtn">
+              Convert Another File
+            </button>
+          </div>
+
+          <div class="features">
+            <div class="feature">
+              <i class="fas fa-bolt"></i>
+              <h4>Fast Conversion</h4>
+              <p>
+                Convert your PDF to PPT in seconds with our high-speed servers.
+              </p>
+            </div>
+            <div class="feature">
+              <i class="fas fa-lock"></i>
+              <h4>Secure Processing</h4>
+              <p>
+                Your files are automatically deleted from our servers after
+                processing.
+              </p>
+            </div>
+            <div class="feature">
+              <i class="fas fa-mobile-alt"></i>
+              <h4>Mobile Friendly</h4>
+              <p>
+                Works perfectly on all devices, including smartphones and
+                tablets.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer>
+      <div class="container">
+        <div class="footer-links">
+          <div class="footer-column">
+            <h4>Product</h4>
+            <ul>
+              <li><a href="#">PDF to Word</a></li>
+              <li><a href="#">PDF to PPT</a></li>
+              <li><a href="#">PDF to Excel</a></li>
+              <li><a href="#">PDF to JPG</a></li>
+            </ul>
+          </div>
+          <div class="footer-column">
+            <h4>Company</h4>
+            <ul>
+              <li><a href="#">About Us</a></li>
+              <li><a href="#">Blog</a></li>
+              <li><a href="#">Careers</a></li>
+              <li><a href="#">Contact</a></li>
+            </ul>
+          </div>
+          <div class="footer-column">
+            <h4>Support</h4>
+            <ul>
+              <li><a href="#">Help Center</a></li>
+              <li><a href="#">FAQ</a></li>
+              <li><a href="#">Privacy Policy</a></li>
+              <li><a href="#">Terms of Service</a></li>
+            </ul>
+          </div>
+          <div class="footer-column">
+            <h4>Connect</h4>
+            <div class="social-icons">
+              <a href="#"><i class="fab fa-facebook-f"></i></a>
+              <a href="#"><i class="fab fa-twitter"></i></a>
+              <a href="#"><i class="fab fa-instagram"></i></a>
+              <a href="#"><i class="fab fa-linkedin-in"></i></a>
+            </div>
+          </div>
+        </div>
+        <div class="copyright">
+          <p>&copy; 2023 PDFtoPPT. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+
+    <script
+      src="https://www.dropbox.com/static/api/2/dropins.js"
+      id="dropboxjs"
+      data-app-key="YOUR_DROPBOX_APP_KEY"
+    ></script>
+    <script src="https://apis.google.com/js/api.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const uploadArea = document.getElementById("uploadArea");
+        const fileInput = document.getElementById("fileInput");
+        const selectFileBtn = document.getElementById("selectFileBtn");
+        const progressContainer = document.getElementById("progressContainer");
+        const resultContainer = document.getElementById("resultContainer");
+        const downloadBtn = document.getElementById("downloadBtn");
+        const convertAnotherBtn = document.getElementById("convertAnotherBtn");
+        const progressBar = document.getElementById("progressBar");
+        const progressText = document.getElementById("progressText");
+
+        let downloadUrl = "";
+        let filename = "";
+
+        // File selection
+        selectFileBtn.addEventListener("click", () => fileInput.click());
+
+        fileInput.addEventListener("change", handleFileSelect);
+
+        // Drag and drop
+        ["dragenter", "dragover", "dragleave", "drop"].forEach((eventName) => {
+          uploadArea.addEventListener(eventName, preventDefaults, false);
+        });
+
+        function preventDefaults(e) {
+          e.preventDefault();
+          e.stopPropagation();
+        }
+
+        ["dragenter", "dragover"].forEach((eventName) => {
+          uploadArea.addEventListener(eventName, highlight, false);
+        });
+
+        ["dragleave", "drop"].forEach((eventName) => {
+          uploadArea.addEventListener(eventName, unhighlight, false);
+        });
+
+        function highlight() {
+          uploadArea.classList.add("highlight");
+        }
+
+        function unhighlight() {
+          uploadArea.classList.remove("highlight");
+        }
+
+        uploadArea.addEventListener("drop", handleDrop, false);
+
+        function handleDrop(e) {
+          const dt = e.dataTransfer;
+          const files = dt.files;
+
+          if (files.length > 0) {
+            handleFiles(files);
+          }
+        }
+
+        function handleFileSelect(e) {
+          const files = e.target.files;
+          if (files.length > 0) {
+            handleFiles(files);
+          }
+        }
+
+        function handleFiles(files) {
+          const file = files[0];
+
+          if (
+            !file.type.includes("pdf") &&
+            !file.name.toLowerCase().endsWith(".pdf")
+          ) {
+            alert("Please select a PDF file.");
+            return;
+          }
+
+          // Check file size (max 100MB)
+          if (file.size > 100 * 1024 * 1024) {
+            alert("File size exceeds 100MB limit.");
+            return;
+          }
+
+          startConversion(file);
+        }
+
+        function startConversion(file) {
+          uploadArea.style.display = "none";
+          progressContainer.style.display = "block";
+
+          // Simulate progress (in a real app, you'd use actual progress events)
+          let progress = 0;
+          const progressInterval = setInterval(() => {
+            progress += Math.random() * 10;
+            if (progress > 90) {
+              progress = 90; // Don't go to 100% until the actual conversion is done
+            }
+            updateProgress(progress);
+          }, 300);
+
+          const formData = new FormData();
+          formData.append("file", file);
+
+          fetch("pdf_to_ppt/convert", {
+            method: "POST",
+            body: formData,
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              clearInterval(progressInterval);
+              updateProgress(100);
+
+              if (data.error) {
+                progressText.textContent = `Error: ${data.error}`;
+                setTimeout(() => {
+                  resetUI();
+                }, 2000);
+                return;
+              }
+
+              downloadUrl = data.download_url;
+              filename = data.filename;
+
+              // Show result
+              progressContainer.style.display = "none";
+              resultContainer.style.display = "block";
+            })
+            .catch((error) => {
+              clearInterval(progressInterval);
+              progressText.textContent = `Error: ${error.message}`;
+              setTimeout(() => {
+                resetUI();
+              }, 2000);
+            });
+        }
+
+        function updateProgress(percent) {
+          progressBar.style.width = `${percent}%`;
+          progressText.textContent = `Converting your PDF to PowerPoint... ${Math.round(
+            percent
+          )}%`;
+        }
+
+        downloadBtn.addEventListener("click", () => {
+          if (downloadUrl) {
+            // Create a temporary anchor element to trigger download
+            const a = document.createElement("a");
+            a.href = downloadUrl;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+
+            // Clean up after download
+            setTimeout(() => {
+              fetch("/cleanup", {
+                method: "POST",
+              });
+            }, 5000);
+          }
+        });
+
+        convertAnotherBtn.addEventListener("click", resetUI);
+
+        function resetUI() {
+          uploadArea.style.display = "block";
+          progressContainer.style.display = "none";
+          resultContainer.style.display = "none";
+          progressBar.style.width = "0%";
+          fileInput.value = "";
+          downloadUrl = "";
+          filename = "";
+        }
+
+        // Dropbox integration
+        document
+          .getElementById("dropboxBtn")
+          .addEventListener("click", function () {
+            Dropbox.choose({
+              linkType: "direct",
+              multiselect: false,
+              extensions: [".pdf"],
+              success: function (files) {
+                // In a real app, you would download the file from Dropbox first
+                alert(
+                  "Dropbox integration would download the file here in a real implementation"
+                );
+              },
+              cancel: function () {
+                console.log("Dropbox picker closed");
+              },
+            });
+          });
+
+        // Google Drive integration
+        document
+          .getElementById("driveBtn")
+          .addEventListener("click", function () {
+            // Load the Google API client library
+            gapi.load("client:auth2:picker", {
+              callback: function () {
+                // In a real app, you would authenticate and use the Picker API
+                alert(
+                  "Google Drive integration would be implemented here with proper authentication"
+                );
+              },
+              onerror: function () {
+                alert("Failed to load Google API client");
+              },
+              timeout: 5000,
+              ontimeout: function () {
+                alert("Timeout loading Google API client");
+              },
+            });
+          });
+      });
+    </script>
+  </body>
+</html>

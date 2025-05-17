@@ -1,0 +1,1661 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PDF to Word Converter | Convert PDF to DOC/DOCX Online</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <style>
+      :root {
+        --primary-color: #2d8cff;
+        --primary-hover: #1a7ae6;
+        --secondary-color: #f8f9fa;
+        --text-color: #333;
+        --light-text: #666;
+        --border-color: #e0e0e0;
+        --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        --transition: all 0.3s ease;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Roboto", sans-serif;
+        color: var(--text-color);
+        line-height: 1.6;
+        background-color: #f5f7fa;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+
+      header {
+        background-color: white;
+        box-shadow: var(--shadow);
+        padding: 15px 0;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+
+      .header-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .logo {
+        font-size: 24px;
+        font-weight: 700;
+        color: var(--primary-color);
+        display: flex;
+        align-items: center;
+      }
+
+      .logo i {
+        margin-right: 10px;
+      }
+
+      nav ul {
+        display: flex;
+        list-style: none;
+      }
+
+      nav ul li {
+        margin-left: 25px;
+      }
+
+      nav ul li a {
+        text-decoration: none;
+        color: var(--text-color);
+        font-weight: 500;
+        transition: var(--transition);
+      }
+
+      nav ul li a:hover {
+        color: var(--primary-color);
+      }
+
+      .hero {
+        text-align: center;
+        padding: 60px 0 40px;
+      }
+
+      .hero h1 {
+        font-size: 36px;
+        margin-bottom: 15px;
+        font-weight: 700;
+      }
+
+      .hero p {
+        font-size: 18px;
+        color: var(--light-text);
+        max-width: 700px;
+        margin: 0 auto 30px;
+      }
+
+      .converter-container {
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: var(--shadow);
+        padding: 30px;
+        margin-bottom: 40px;
+        transition: var(--transition);
+      }
+
+      .drop-area {
+        border: 2px dashed var(--border-color);
+        border-radius: 8px;
+        padding: 40px;
+        text-align: center;
+        cursor: pointer;
+        transition: var(--transition);
+        margin-bottom: 20px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .drop-area:hover {
+        border-color: var(--primary-color);
+      }
+
+      .drop-area.active {
+        border-color: var(--primary-color);
+        background-color: rgba(45, 140, 255, 0.05);
+      }
+
+      .drop-area i {
+        font-size: 48px;
+        color: var(--primary-color);
+        margin-bottom: 15px;
+      }
+
+      .drop-area h3 {
+        font-size: 20px;
+        margin-bottom: 10px;
+      }
+
+      .drop-area p {
+        color: var(--light-text);
+        margin-bottom: 20px;
+      }
+
+      .btn {
+        display: inline-block;
+        background-color: var(--primary-color);
+        color: white;
+        padding: 12px 24px;
+        border-radius: 6px;
+        text-decoration: none;
+        font-weight: 500;
+        transition: var(--transition);
+        border: none;
+        cursor: pointer;
+        font-size: 16px;
+      }
+
+      .btn:hover {
+        background-color: var(--primary-hover);
+        transform: translateY(-2px);
+      }
+
+      .btn-outline {
+        background-color: transparent;
+        border: 1px solid var(--primary-color);
+        color: var(--primary-color);
+      }
+
+      .btn-outline:hover {
+        background-color: var(--primary-color);
+        color: white;
+      }
+
+      .btn-small {
+        padding: 8px 16px;
+        font-size: 14px;
+      }
+
+      .options-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+
+      .format-selector {
+        display: flex;
+        align-items: center;
+      }
+
+      .format-selector label {
+        margin-right: 10px;
+        font-weight: 500;
+      }
+
+      select {
+        padding: 10px 15px;
+        border-radius: 6px;
+        border: 1px solid var(--border-color);
+        background-color: white;
+        font-size: 16px;
+        cursor: pointer;
+        transition: var(--transition);
+      }
+
+      select:focus {
+        outline: none;
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 2px rgba(45, 140, 255, 0.2);
+      }
+
+      .file-list {
+        margin-top: 20px;
+      }
+
+      .file-item {
+        display: flex;
+        align-items: center;
+        padding: 15px;
+        background-color: var(--secondary-color);
+        border-radius: 8px;
+        margin-bottom: 10px;
+        animation: fadeIn 0.5s ease;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .file-icon {
+        margin-right: 15px;
+        color: var(--primary-color);
+        font-size: 24px;
+      }
+
+      .file-info {
+        flex: 1;
+      }
+
+      .file-name {
+        font-weight: 500;
+        margin-bottom: 5px;
+      }
+
+      .file-size {
+        font-size: 14px;
+        color: var(--light-text);
+      }
+
+      .file-actions {
+        display: flex;
+        gap: 10px;
+      }
+
+      .progress-bar {
+        height: 6px;
+        background-color: #e0e0e0;
+        border-radius: 3px;
+        margin-top: 10px;
+        overflow: hidden;
+      }
+
+      .progress {
+        height: 100%;
+        background-color: var(--primary-color);
+        width: 0;
+        transition: width 0.3s ease;
+      }
+
+      .result-container {
+        display: none;
+        text-align: center;
+        padding: 30px;
+        background-color: #f0f8ff;
+        border-radius: 8px;
+        margin-top: 20px;
+        animation: fadeIn 0.5s ease;
+      }
+
+      .result-container h3 {
+        margin-bottom: 20px;
+        color: var(--primary-color);
+      }
+
+      .download-btn {
+        margin-top: 20px;
+      }
+
+      .features {
+        padding: 60px 0;
+        background-color: white;
+      }
+
+      .section-title {
+        text-align: center;
+        margin-bottom: 40px;
+      }
+
+      .section-title h2 {
+        font-size: 32px;
+        margin-bottom: 15px;
+      }
+
+      .section-title p {
+        color: var(--light-text);
+        max-width: 700px;
+        margin: 0 auto;
+      }
+
+      .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px;
+      }
+
+      .feature-card {
+        background-color: var(--secondary-color);
+        border-radius: 8px;
+        padding: 30px;
+        text-align: center;
+        transition: var(--transition);
+      }
+
+      .feature-card:hover {
+        transform: translateY(-5px);
+        box-shadow: var(--shadow);
+      }
+
+      .feature-icon {
+        font-size: 40px;
+        color: var(--primary-color);
+        margin-bottom: 20px;
+      }
+
+      .feature-card h3 {
+        margin-bottom: 15px;
+      }
+
+      .feature-card p {
+        color: var(--light-text);
+      }
+
+      footer {
+        background-color: #2c3e50;
+        color: white;
+        padding: 40px 0 20px;
+      }
+
+      .footer-content {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 30px;
+        margin-bottom: 30px;
+      }
+
+      .footer-column h3 {
+        font-size: 18px;
+        margin-bottom: 20px;
+        position: relative;
+        padding-bottom: 10px;
+      }
+
+      .footer-column h3::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 40px;
+        height: 2px;
+        background-color: var(--primary-color);
+      }
+
+      .footer-column ul {
+        list-style: none;
+      }
+
+      .footer-column ul li {
+        margin-bottom: 10px;
+      }
+
+      .footer-column ul li a {
+        color: #bdc3c7;
+        text-decoration: none;
+        transition: var(--transition);
+      }
+
+      .footer-column ul li a:hover {
+        color: white;
+        padding-left: 5px;
+      }
+
+      .copyright {
+        text-align: center;
+        padding-top: 20px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        color: #bdc3c7;
+        font-size: 14px;
+      }
+
+      /* Responsive adjustments */
+      @media (max-width: 768px) {
+        .header-content {
+          flex-direction: column;
+        }
+
+        nav ul {
+          margin-top: 15px;
+        }
+
+        nav ul li {
+          margin-left: 15px;
+          margin-right: 15px;
+        }
+
+        .hero h1 {
+          font-size: 28px;
+        }
+
+        .hero p {
+          font-size: 16px;
+        }
+
+        .options-row {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 15px;
+        }
+
+        .features-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      /* Loading spinner */
+      .spinner {
+        display: none;
+        width: 40px;
+        height: 40px;
+        margin: 20px auto;
+        border: 4px solid rgba(0, 0, 0, 0.1);
+        border-radius: 50%;
+        border-top: 4px solid var(--primary-color);
+        animation: spin 1s linear infinite;
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      /* Toast notification */
+      .toast {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background-color: #333;
+        color: white;
+        padding: 15px 25px;
+        border-radius: 6px;
+        box-shadow: var(--shadow);
+        transform: translateY(100px);
+        opacity: 0;
+        transition: all 0.3s ease;
+        z-index: 1000;
+      }
+
+      .toast.show {
+        transform: translateY(0);
+        opacity: 1;
+      }
+
+      /* Google Picker styling */
+      .picker-dialog-bg {
+        z-index: 1001 !important;
+      }
+
+      .picker-dialog {
+        z-index: 1002 !important;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="container header-content">
+        <div class="logo">
+          <i class="fas fa-file-word"></i>
+          <span>PDFtoWord</span>
+        </div>
+        <nav>
+          <ul>
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Features</a></li>
+            <li><a href="#">How it works</a></li>
+            <li><a href="#">Contact</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="container">
+          <h1>Convert PDF to Word Documents</h1>
+          <p>
+            Easily convert your PDF files into easy to edit DOC and DOCX
+            documents. The converted Word document is almost 100% accurate.
+          </p>
+        </div>
+      </section>
+
+      <section class="container">
+        <div class="converter-container">
+          <div class="options-row">
+            <div class="format-selector">
+              <label for="output-format">Output Format:</label>
+              <select id="output-format">
+                <option value="docx">DOCX (Word Document)</option>
+                <option value="doc">DOC (Word 97-2003)</option>
+              </select>
+            </div>
+            <button id="google-drive-btn" class="btn btn-outline btn-small">
+              <i class="fab fa-google-drive"></i> Google Drive
+            </button>
+          </div>
+
+          <div id="drop-area" class="drop-area">
+            <i class="fas fa-file-pdf"></i>
+            <h3>Select PDF files</h3>
+            <p>Drag & drop your PDF files here or click to browse</p>
+            <button id="select-files-btn" class="btn">Select Files</button>
+            <input
+              type="file"
+              id="file-input"
+              accept=".pdf"
+              multiple
+              style="display: none"
+            />
+          </div>
+
+          <div id="file-list" class="file-list"></div>
+
+          <div id="spinner" class="spinner"></div>
+
+          <div id="result-container" class="result-container">
+            <h3>Conversion Complete!</h3>
+            <p>Your PDF has been successfully converted to Word format.</p>
+            <button id="download-btn" class="btn download-btn">
+              <i class="fas fa-download"></i> Download Word File
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <section class="features">
+        <div class="container">
+          <div class="section-title">
+            <h2>Why Choose Our PDF to Word Converter</h2>
+            <p>
+              Our tool offers the best conversion quality with these amazing
+              features
+            </p>
+          </div>
+          <div class="features-grid">
+            <div class="feature-card">
+              <div class="feature-icon">
+                <i class="fas fa-tachometer-alt"></i>
+              </div>
+              <h3>Fast Conversion</h3>
+              <p>
+                Convert your PDF files to Word in seconds with our high-speed
+                processing technology.
+              </p>
+            </div>
+            <div class="feature-card">
+              <div class="feature-icon">
+                <i class="fas fa-check-circle"></i>
+              </div>
+              <h3>High Accuracy</h3>
+              <p>
+                Get nearly 100% accurate Word documents that maintain your
+                original formatting.
+              </p>
+            </div>
+            <div class="feature-card">
+              <div class="feature-icon">
+                <i class="fas fa-lock"></i>
+              </div>
+              <h3>Secure Processing</h3>
+              <p>
+                Your files are automatically deleted from our servers after
+                conversion for your privacy.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-column">
+            <h3>PDFtoWord</h3>
+            <p>
+              Convert your PDF files to editable Word documents quickly and
+              easily.
+            </p>
+          </div>
+          <div class="footer-column">
+            <h3>Quick Links</h3>
+            <ul>
+              <li><a href="#">Home</a></li>
+              <li><a href="#">Features</a></li>
+              <li><a href="#">How it works</a></li>
+              <li><a href="#">Contact</a></li>
+            </ul>
+          </div>
+          <div class="footer-column">
+            <h3>Tools</h3>
+            <ul>
+              <li><a href="#">PDF to Word</a></li>
+              <li><a href="#">Word to PDF</a></li>
+              <li><a href="#">PDF Compressor</a></li>
+              <li><a href="#">PDF Merger</a></li>
+            </ul>
+          </div>
+          <div class="footer-column">
+            <h3>Support</h3>
+            <ul>
+              <li><a href="#">Help Center</a></li>
+              <li><a href="#">Privacy Policy</a></li>
+              <li><a href="#">Terms of Service</a></li>
+              <li><a href="#">FAQ</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="copyright">
+          <p>&copy; 2023 PDFtoWord. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+
+    <div id="toast" class="toast"></div>
+
+    <!-- Google Picker API -->
+    <script src="https://apis.google.com/js/api.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+
+    <!-- <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // [Your existing DOM elements and variables]
+        // ...
+
+        // Function to create a properly structured DOCX file
+        async function createValidDocxFile(
+          fileName,
+          content = "Sample converted content"
+        ) {
+          // Create a new JSZip instance
+          const zip = new JSZip();
+
+          // Add the required document.xml with proper Word ML namespace
+          const documentXml = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                <w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
+                    <w:body>
+                        <w:p>
+                            <w:r>
+                                <w:t>${content}</w:t>
+                            </w:r>
+                        </w:p>
+                        <w:sectPr>
+                            <w:pgSz w:w="12240" w:h="15840"/>
+                            <w:pgMar w:top="1440" w:right="1440" w:bottom="1440" w:left="1440" w:header="720" w:footer="720" w:gutter="0"/>
+                            <w:cols w:space="720"/>
+                            <w:docGrid w:linePitch="360"/>
+                        </w:sectPr>
+                    </w:body>
+                </w:document>`;
+
+          // Add required [Content_Types].xml
+          const contentTypesXml = `<?xml version="1.0" encoding="UTF-8"?>
+                <Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">
+                    <Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/>
+                    <Default Extension="xml" ContentType="application/xml"/>
+                    <Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/>
+                </Types>`;
+
+          // Add required _rels/.rels
+          const relsXml = `<?xml version="1.0" encoding="UTF-8"?>
+                <Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
+                    <Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/>
+                </Relationships>`;
+
+          // Add required word/_rels/document.xml.rels
+          const wordRelsXml = `<?xml version="1.0" encoding="UTF-8"?>
+                <Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"></Relationships>`;
+
+          // Create folder structure and add files
+          zip.file("[Content_Types].xml", contentTypesXml);
+
+          const relsFolder = zip.folder("_rels");
+          relsFolder.file(".rels", relsXml);
+
+          const wordFolder = zip.folder("word");
+          wordFolder.file("document.xml", documentXml);
+
+          const wordRelsFolder = wordFolder.folder("_rels");
+          wordRelsFolder.file("document.xml.rels", wordRelsXml);
+
+          // Generate the DOCX file as a blob
+          const blob = await zip.generateAsync({
+            type: "blob",
+            mimeType:
+              "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+          });
+
+          return {
+            name: fileName,
+            url: URL.createObjectURL(blob),
+            blob: blob,
+          };
+        }
+
+        // Updated conversion function
+        async function completeConversion(file) {
+          spinner.style.display = "none";
+
+          const fileName = file.name.replace(".pdf", `.${outputFormat.value}`);
+
+          try {
+            // Create a properly formatted DOCX file
+            conversionResult = await createValidDocxFile(
+              fileName,
+              "This is a properly formatted Word document created from your PDF.\n\n" +
+                "All formatting and structure are correct for Microsoft Word."
+            );
+
+            resultContainer.style.display = "block";
+            showToast("Conversion completed successfully!");
+          } catch (error) {
+            console.error("Conversion error:", error);
+            showToast("Error during conversion: " + error.message);
+          }
+        }
+
+        // Updated download function with proper cleanup
+        function downloadConvertedFile() {
+          if (!conversionResult) {
+            showToast("No file to download");
+            return;
+          }
+
+          try {
+            const a = document.createElement("a");
+            a.href = conversionResult.url;
+            a.download = conversionResult.name;
+            a.style.display = "none";
+            document.body.appendChild(a);
+            a.click();
+
+            // Clean up after download
+            setTimeout(() => {
+              document.body.removeChild(a);
+              URL.revokeObjectURL(conversionResult.url);
+            }, 100);
+
+            showToast("Download started");
+          } catch (error) {
+            console.error("Download error:", error);
+            showToast("Error during download");
+          }
+        }
+
+        // [Rest of your existing JavaScript]
+        // ...
+      });
+
+      document.addEventListener("DOMContentLoaded", function () {
+        // DOM elements
+        const dropArea = document.getElementById("drop-area");
+        const fileInput = document.getElementById("file-input");
+        const selectFilesBtn = document.getElementById("select-files-btn");
+        const fileList = document.getElementById("file-list");
+        const outputFormat = document.getElementById("output-format");
+        const spinner = document.getElementById("spinner");
+        const resultContainer = document.getElementById("result-container");
+        const downloadBtn = document.getElementById("download-btn");
+        const googleDriveBtn = document.getElementById("google-drive-btn");
+        const toast = document.getElementById("toast");
+
+        // Variables to store files and conversion result
+        let files = [];
+        let conversionResult = null;
+
+        // Prevent default drag behaviors
+        ["dragenter", "dragover", "dragleave", "drop"].forEach((eventName) => {
+          dropArea.addEventListener(eventName, preventDefaults, false);
+          document.body.addEventListener(eventName, preventDefaults, false);
+        });
+
+        // Highlight drop area when item is dragged over it
+        ["dragenter", "dragover"].forEach((eventName) => {
+          dropArea.addEventListener(eventName, highlight, false);
+        });
+
+        ["dragleave", "drop"].forEach((eventName) => {
+          dropArea.addEventListener(eventName, unhighlight, false);
+        });
+
+        // Handle dropped files
+        dropArea.addEventListener("drop", handleDrop, false);
+
+        // Handle file selection via button
+        selectFilesBtn.addEventListener("click", () => fileInput.click());
+        fileInput.addEventListener("change", handleFiles);
+
+        // Google Drive button click handler
+        googleDriveBtn.addEventListener("click", initGooglePicker);
+
+        // Download button click handler
+        downloadBtn.addEventListener("click", downloadConvertedFile);
+
+        function preventDefaults(e) {
+          e.preventDefault();
+          e.stopPropagation();
+        }
+
+        function highlight() {
+          dropArea.classList.add("active");
+        }
+
+        function unhighlight() {
+          dropArea.classList.remove("active");
+        }
+
+        function handleDrop(e) {
+          const dt = e.dataTransfer;
+          const droppedFiles = dt.files;
+          handleFiles({ target: { files: droppedFiles } });
+        }
+
+        function handleFiles(e) {
+          files = Array.from(e.target.files);
+          if (files.length === 0) return;
+
+          // Filter only PDF files
+          files = files.filter(
+            (file) =>
+              file.type === "application/pdf" || file.name.endsWith(".pdf")
+          );
+
+          if (files.length === 0) {
+            showToast("Please select PDF files only");
+            return;
+          }
+
+          renderFileList();
+        }
+
+        function renderFileList() {
+          fileList.innerHTML = "";
+
+          files.forEach((file, index) => {
+            const fileItem = document.createElement("div");
+            fileItem.className = "file-item";
+
+            fileItem.innerHTML = `
+                        <div class="file-icon">
+                            <i class="fas fa-file-pdf"></i>
+                        </div>
+                        <div class="file-info">
+                            <div class="file-name">${file.name}</div>
+                            <div class="file-size">${formatFileSize(
+                              file.size
+                            )}</div>
+                            <div class="progress-bar">
+                                <div class="progress" id="progress-${index}"></div>
+                            </div>
+                        </div>
+                        <div class="file-actions">
+                            <button class="btn btn-outline btn-small convert-btn" data-index="${index}">
+                                <i class="fas fa-exchange-alt"></i> Convert
+                            </button>
+                            <button class="btn btn-outline btn-small remove-btn" data-index="${index}">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    `;
+
+            fileList.appendChild(fileItem);
+          });
+
+          // Add event listeners to convert buttons
+          document.querySelectorAll(".convert-btn").forEach((btn) => {
+            btn.addEventListener("click", function () {
+              const index = parseInt(this.getAttribute("data-index"));
+              convertFile(files[index]);
+            });
+          });
+
+          // Add event listeners to remove buttons
+          document.querySelectorAll(".remove-btn").forEach((btn) => {
+            btn.addEventListener("click", function () {
+              const index = parseInt(this.getAttribute("data-index"));
+              files.splice(index, 1);
+              renderFileList();
+            });
+          });
+        }
+
+        function formatFileSize(bytes) {
+          if (bytes === 0) return "0 Bytes";
+          const k = 1024;
+          const sizes = ["Bytes", "KB", "MB", "GB"];
+          const i = Math.floor(Math.log(bytes) / Math.log(k));
+          return (
+            parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i]
+          );
+        }
+
+        function convertFile(file) {
+          // Show loading spinner
+          spinner.style.display = "block";
+          resultContainer.style.display = "none";
+
+          // Simulate conversion progress
+          const progressElement = document.getElementById(
+            `progress-${files.indexOf(file)}`
+          );
+          let progress = 0;
+          const progressInterval = setInterval(() => {
+            progress += 5;
+            progressElement.style.width = `${progress}%`;
+
+            if (progress >= 100) {
+              clearInterval(progressInterval);
+              setTimeout(() => {
+                completeConversion(file);
+              }, 500);
+            }
+          }, 100);
+        }
+
+        function completeConversion(file) {
+          spinner.style.display = "none";
+
+          // In a real app, this would be the actual converted file from your backend
+          // For this demo, we're creating a mock Word file
+          const fileName = file.name.replace(".pdf", `.${outputFormat.value}`);
+
+          // Create a mock Word file (in a real app, this would come from your conversion service)
+          conversionResult = {
+            name: fileName,
+            content:
+              "Mock Word file content - in a real app, this would be the actual converted file",
+            url: URL.createObjectURL(
+              new Blob(["Mock content"], {
+                type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+              })
+            ),
+          };
+
+          resultContainer.style.display = "block";
+          showToast("Conversion completed successfully!");
+        }
+
+        function downloadConvertedFile() {
+          if (!conversionResult) return;
+
+          const a = document.createElement("a");
+          a.href = conversionResult.url;
+          a.download = conversionResult.name;
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+
+          showToast("Download started");
+        }
+
+        // Google Picker API integration
+        function initGooglePicker() {
+          gapi.load("auth2", function () {
+            gapi.auth2
+              .init({
+                client_id: "YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com",
+                scope: "https://www.googleapis.com/auth/drive.readonly",
+              })
+              .then(() => {
+                gapi.load("picker", () => {
+                  createPicker();
+                });
+              });
+          });
+        }
+
+        function createPicker() {
+          const view = new google.picker.View(google.picker.ViewId.DOCS);
+          view.setMimeTypes("application/pdf");
+
+          const picker = new google.picker.PickerBuilder()
+            .enableFeature(google.picker.Feature.NAV_HIDDEN)
+            .setAppId("YOUR_GOOGLE_APP_ID")
+            .setOAuthToken(
+              gapi.auth2.getAuthInstance().currentUser.get().getAuthResponse()
+                .access_token
+            )
+            .addView(view)
+            .addView(new google.picker.DocsUploadView())
+            .setDeveloperKey("YOUR_DEVELOPER_KEY")
+            .setCallback(pickerCallback)
+            .build();
+
+          picker.setVisible(true);
+        }
+
+        function pickerCallback(data) {
+          if (data.action === google.picker.Action.PICKED) {
+            const fileId = data.docs[0].id;
+            // In a real app, you would fetch the file using Google Drive API
+            showToast("File selected from Google Drive");
+
+            // For demo purposes, we'll just add a mock file
+            files.push(
+              new File(["Google Drive PDF content"], "google-drive-file.pdf", {
+                type: "application/pdf",
+              })
+            );
+            renderFileList();
+          }
+        }
+
+        function showToast(message) {
+          toast.textContent = message;
+          toast.classList.add("show");
+
+          setTimeout(() => {
+            toast.classList.remove("show");
+          }, 3000);
+        }
+
+        // For demo purposes, we'll simulate Google API loading
+        setTimeout(() => {
+          window.gapi = {
+            load: function (module, callback) {
+              if (module === "auth2") {
+                setTimeout(() => {
+                  window.gapi.auth2 = {
+                    init: function (config) {
+                      return Promise.resolve({
+                        currentUser: {
+                          get: function () {
+                            return {
+                              getAuthResponse: function () {
+                                return { access_token: "mock_token" };
+                              },
+                            };
+                          },
+                        },
+                      });
+                    },
+                  };
+                  callback();
+                }, 500);
+              } else if (module === "picker") {
+                setTimeout(() => {
+                  window.google = {
+                    picker: {
+                      View: function (viewId) {
+                        return {
+                          setMimeTypes: function () {
+                            return this;
+                          },
+                        };
+                      },
+                      ViewId: { DOCS: "docs" },
+                      Feature: { NAV_HIDDEN: "nav_hidden" },
+                      PickerBuilder: function () {
+                        return {
+                          enableFeature: function () {
+                            return this;
+                          },
+                          setAppId: function () {
+                            return this;
+                          },
+                          setOAuthToken: function () {
+                            return this;
+                          },
+                          addView: function () {
+                            return this;
+                          },
+                          setDeveloperKey: function () {
+                            return this;
+                          },
+                          setCallback: function () {
+                            return this;
+                          },
+                          build: function () {
+                            return {
+                              setVisible: function (visible) {
+                                if (visible) {
+                                  // Simulate picking a file after 1 second
+                                  setTimeout(() => {
+                                    pickerCallback({
+                                      action: "picked",
+                                      docs: [{ id: "mock_id" }],
+                                    });
+                                  }, 1000);
+                                }
+                              },
+                            };
+                          },
+                        };
+                      },
+                      DocsUploadView: function () {
+                        return {};
+                      },
+                      Action: { PICKED: "picked" },
+                    },
+                  };
+                  callback();
+                }, 500);
+              }
+            },
+          };
+        }, 1000);
+      });
+    </script> -->
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // DOM elements
+        const dropArea = document.getElementById("drop-area");
+        const fileInput = document.getElementById("file-input");
+        const selectFilesBtn = document.getElementById("select-files-btn");
+        const fileList = document.getElementById("file-list");
+        const outputFormat = document.getElementById("output-format");
+        const spinner = document.getElementById("spinner");
+        const resultContainer = document.getElementById("result-container");
+        const downloadBtn = document.getElementById("download-btn");
+        const googleDriveBtn = document.getElementById("google-drive-btn");
+        const toast = document.getElementById("toast");
+
+        // Variables to store files and conversion result
+        let files = [];
+        let conversionResult = null;
+
+        // [Keep all your existing helper functions like preventDefaults, highlight, etc.]
+        // ...
+
+        // Function to create a properly structured DOCX file
+        async function createValidDocxFile(
+          fileName,
+          content = "Sample converted content"
+        ) {
+          try {
+            const zip = new JSZip();
+
+            // Main document XML
+            const documentXml = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+            <w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
+                <w:body>
+                    <w:p>
+                        <w:r>
+                            <w:t>${content.replace(
+                              /\n/g,
+                              "</w:t></w:r></w:p><w:p><w:r><w:t>"
+                            )}</w:t>
+                        </w:r>
+                    </w:p>
+                    <w:sectPr>
+                        <w:pgSz w:w="12240" w:h="15840"/>
+                        <w:pgMar w:top="1440" w:right="1440" w:bottom="1440" w:left="1440" w:header="720" w:footer="720" w:gutter="0"/>
+                        <w:cols w:space="720"/>
+                        <w:docGrid w:linePitch="360"/>
+                    </w:sectPr>
+                </w:body>
+            </w:document>`;
+
+            // Required supporting files
+            const contentTypesXml = `<?xml version="1.0" encoding="UTF-8"?>
+            <Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">
+                <Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/>
+                <Default Extension="xml" ContentType="application/xml"/>
+                <Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/>
+            </Types>`;
+
+            const relsXml = `<?xml version="1.0" encoding="UTF-8"?>
+            <Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
+                <Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/>
+            </Relationships>`;
+
+            const wordRelsXml = `<?xml version="1.0" encoding="UTF-8"?>
+            <Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"></Relationships>`;
+
+            // Build the zip structure
+            zip.file("[Content_Types].xml", contentTypesXml);
+
+            const relsFolder = zip.folder("_rels");
+            relsFolder.file(".rels", relsXml);
+
+            const wordFolder = zip.folder("word");
+            wordFolder.file("document.xml", documentXml);
+
+            const wordRelsFolder = wordFolder.folder("_rels");
+            wordRelsFolder.file("document.xml.rels", wordRelsXml);
+
+            // Generate the blob
+            const blob = await zip.generateAsync({
+              type: "blob",
+              mimeType:
+                "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+              compression: "DEFLATE",
+            });
+
+            return {
+              name: fileName,
+              url: URL.createObjectURL(blob),
+              blob: blob,
+            };
+          } catch (error) {
+            console.error("Error creating DOCX:", error);
+            throw error;
+          }
+        }
+
+        // Updated conversion function
+        async function completeConversion(file) {
+          spinner.style.display = "block";
+          resultContainer.style.display = "none";
+
+          try {
+            const fileName = file.name.replace(
+              ".pdf",
+              `.${outputFormat.value}`
+            );
+
+            // Create a properly formatted DOCX file
+            conversionResult = await createValidDocxFile(
+              fileName,
+              "This is a properly formatted Word document created from your PDF.\n\n" +
+                "All formatting and structure are correct for Microsoft Word."
+            );
+
+            spinner.style.display = "none";
+            resultContainer.style.display = "block";
+            showToast("Conversion completed successfully!");
+          } catch (error) {
+            spinner.style.display = "none";
+            showToast("Error during conversion: " + error.message);
+            console.error("Conversion error:", error);
+          }
+        }
+
+        // Updated download function
+        function downloadConvertedFile() {
+          if (!conversionResult) {
+            showToast("No file to download");
+            return;
+          }
+
+          try {
+            const a = document.createElement("a");
+            a.href = conversionResult.url;
+            a.download = conversionResult.name;
+            document.body.appendChild(a);
+            a.click();
+
+            // Clean up after download
+            setTimeout(() => {
+              document.body.removeChild(a);
+              URL.revokeObjectURL(conversionResult.url);
+            }, 100);
+
+            showToast("Download started");
+          } catch (error) {
+            showToast("Download failed: " + error.message);
+            console.error("Download error:", error);
+          }
+        }
+
+       
+      });
+
+
+      document.addEventListener("DOMContentLoaded", function () {
+        // DOM elements
+        const dropArea = document.getElementById("drop-area");
+        const fileInput = document.getElementById("file-input");
+        const selectFilesBtn = document.getElementById("select-files-btn");
+        const fileList = document.getElementById("file-list");
+        const outputFormat = document.getElementById("output-format");
+        const spinner = document.getElementById("spinner");
+        const resultContainer = document.getElementById("result-container");
+        const downloadBtn = document.getElementById("download-btn");
+        const googleDriveBtn = document.getElementById("google-drive-btn");
+        const toast = document.getElementById("toast");
+
+        // Variables to store files and conversion result
+        let files = [];
+        let conversionResult = null;
+
+        // Prevent default drag behaviors
+        ["dragenter", "dragover", "dragleave", "drop"].forEach((eventName) => {
+          dropArea.addEventListener(eventName, preventDefaults, false);
+          document.body.addEventListener(eventName, preventDefaults, false);
+        });
+
+        // Highlight drop area when item is dragged over it
+        ["dragenter", "dragover"].forEach((eventName) => {
+          dropArea.addEventListener(eventName, highlight, false);
+        });
+
+        ["dragleave", "drop"].forEach((eventName) => {
+          dropArea.addEventListener(eventName, unhighlight, false);
+        });
+
+        // Handle dropped files
+        dropArea.addEventListener("drop", handleDrop, false);
+
+        // Handle file selection via button
+        selectFilesBtn.addEventListener("click", () => fileInput.click());
+        fileInput.addEventListener("change", handleFiles);
+
+        // Google Drive button click handler
+        googleDriveBtn.addEventListener("click", initGooglePicker);
+
+        // Download button click handler
+        downloadBtn.addEventListener("click", downloadConvertedFile);
+
+        function preventDefaults(e) {
+          e.preventDefault();
+          e.stopPropagation();
+        }
+
+        function highlight() {
+          dropArea.classList.add("active");
+        }
+
+        function unhighlight() {
+          dropArea.classList.remove("active");
+        }
+
+        function handleDrop(e) {
+          const dt = e.dataTransfer;
+          const droppedFiles = dt.files;
+          handleFiles({ target: { files: droppedFiles } });
+        }
+
+        function handleFiles(e) {
+          files = Array.from(e.target.files);
+          if (files.length === 0) return;
+
+          // Filter only PDF files
+          files = files.filter(
+            (file) =>
+              file.type === "application/pdf" || file.name.endsWith(".pdf")
+          );
+
+          if (files.length === 0) {
+            showToast("Please select PDF files only");
+            return;
+          }
+
+          renderFileList();
+        }
+
+        function renderFileList() {
+          fileList.innerHTML = "";
+
+          files.forEach((file, index) => {
+            const fileItem = document.createElement("div");
+            fileItem.className = "file-item";
+
+            fileItem.innerHTML = `
+                        <div class="file-icon">
+                            <i class="fas fa-file-pdf"></i>
+                        </div>
+                        <div class="file-info">
+                            <div class="file-name">${file.name}</div>
+                            <div class="file-size">${formatFileSize(
+                              file.size
+                            )}</div>
+                            <div class="progress-bar">
+                                <div class="progress" id="progress-${index}"></div>
+                            </div>
+                        </div>
+                        <div class="file-actions">
+                            <button class="btn btn-outline btn-small convert-btn" data-index="${index}">
+                                <i class="fas fa-exchange-alt"></i> Convert
+                            </button>
+                            <button class="btn btn-outline btn-small remove-btn" data-index="${index}">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    `;
+
+            fileList.appendChild(fileItem);
+          });
+
+          // Add event listeners to convert buttons
+          document.querySelectorAll(".convert-btn").forEach((btn) => {
+            btn.addEventListener("click", function () {
+              const index = parseInt(this.getAttribute("data-index"));
+              convertFile(files[index]);
+            });
+          });
+
+          // Add event listeners to remove buttons
+          document.querySelectorAll(".remove-btn").forEach((btn) => {
+            btn.addEventListener("click", function () {
+              const index = parseInt(this.getAttribute("data-index"));
+              files.splice(index, 1);
+              renderFileList();
+            });
+          });
+        }
+
+        function formatFileSize(bytes) {
+          if (bytes === 0) return "0 Bytes";
+          const k = 1024;
+          const sizes = ["Bytes", "KB", "MB", "GB"];
+          const i = Math.floor(Math.log(bytes) / Math.log(k));
+          return (
+            parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i]
+          );
+        }
+
+        function convertFile(file) {
+          // Show loading spinner
+          spinner.style.display = "block";
+          resultContainer.style.display = "none";
+
+          // Simulate conversion progress
+          const progressElement = document.getElementById(
+            `progress-${files.indexOf(file)}`
+          );
+          let progress = 0;
+          const progressInterval = setInterval(() => {
+            progress += 5;
+            progressElement.style.width = `${progress}%`;
+
+            if (progress >= 100) {
+              clearInterval(progressInterval);
+              setTimeout(() => {
+                completeConversion(file);
+              }, 500);
+            }
+          }, 100);
+        }
+
+        function completeConversion(file) {
+          spinner.style.display = "none";
+
+          // In a real app, this would be the actual converted file from your backend
+          // For this demo, we're creating a mock Word file
+          const fileName = file.name.replace(".pdf", `.${outputFormat.value}`);
+
+          // Create a mock Word file (in a real app, this would come from your conversion service)
+          conversionResult = {
+            name: fileName,
+            content:
+              "Mock Word file content - in a real app, this would be the actual converted file",
+            url: URL.createObjectURL(
+              new Blob(["Mock content"], {
+                type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+              })
+            ),
+          };
+
+          resultContainer.style.display = "block";
+          showToast("Conversion completed successfully!");
+        }
+
+        function downloadConvertedFile() {
+          if (!conversionResult) return;
+
+          const a = document.createElement("a");
+          a.href = conversionResult.url;
+          a.download = conversionResult.name;
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+
+          showToast("Download started");
+        }
+
+        // Google Picker API integration
+        function initGooglePicker() {
+          gapi.load("auth2", function () {
+            gapi.auth2
+              .init({
+                client_id: "YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com",
+                scope: "https://www.googleapis.com/auth/drive.readonly",
+              })
+              .then(() => {
+                gapi.load("picker", () => {
+                  createPicker();
+                });
+              });
+          });
+        }
+
+        function createPicker() {
+          const view = new google.picker.View(google.picker.ViewId.DOCS);
+          view.setMimeTypes("application/pdf");
+
+          const picker = new google.picker.PickerBuilder()
+            .enableFeature(google.picker.Feature.NAV_HIDDEN)
+            .setAppId("YOUR_GOOGLE_APP_ID")
+            .setOAuthToken(
+              gapi.auth2.getAuthInstance().currentUser.get().getAuthResponse()
+                .access_token
+            )
+            .addView(view)
+            .addView(new google.picker.DocsUploadView())
+            .setDeveloperKey("YOUR_DEVELOPER_KEY")
+            .setCallback(pickerCallback)
+            .build();
+
+          picker.setVisible(true);
+        }
+
+        function pickerCallback(data) {
+          if (data.action === google.picker.Action.PICKED) {
+            const fileId = data.docs[0].id;
+            // In a real app, you would fetch the file using Google Drive API
+            showToast("File selected from Google Drive");
+
+            // For demo purposes, we'll just add a mock file
+            files.push(
+              new File(["Google Drive PDF content"], "google-drive-file.pdf", {
+                type: "application/pdf",
+              })
+            );
+            renderFileList();
+          }
+        }
+
+        function showToast(message) {
+          toast.textContent = message;
+          toast.classList.add("show");
+
+          setTimeout(() => {
+            toast.classList.remove("show");
+          }, 3000);
+        }
+
+        // For demo purposes, we'll simulate Google API loading
+        setTimeout(() => {
+          window.gapi = {
+            load: function (module, callback) {
+              if (module === "auth2") {
+                setTimeout(() => {
+                  window.gapi.auth2 = {
+                    init: function (config) {
+                      return Promise.resolve({
+                        currentUser: {
+                          get: function () {
+                            return {
+                              getAuthResponse: function () {
+                                return { access_token: "mock_token" };
+                              },
+                            };
+                          },
+                        },
+                      });
+                    },
+                  };
+                  callback();
+                }, 500);
+              } else if (module === "picker") {
+                setTimeout(() => {
+                  window.google = {
+                    picker: {
+                      View: function (viewId) {
+                        return {
+                          setMimeTypes: function () {
+                            return this;
+                          },
+                        };
+                      },
+                      ViewId: { DOCS: "docs" },
+                      Feature: { NAV_HIDDEN: "nav_hidden" },
+                      PickerBuilder: function () {
+                        return {
+                          enableFeature: function () {
+                            return this;
+                          },
+                          setAppId: function () {
+                            return this;
+                          },
+                          setOAuthToken: function () {
+                            return this;
+                          },
+                          addView: function () {
+                            return this;
+                          },
+                          setDeveloperKey: function () {
+                            return this;
+                          },
+                          setCallback: function () {
+                            return this;
+                          },
+                          build: function () {
+                            return {
+                              setVisible: function (visible) {
+                                if (visible) {
+                                  // Simulate picking a file after 1 second
+                                  setTimeout(() => {
+                                    pickerCallback({
+                                      action: "picked",
+                                      docs: [{ id: "mock_id" }],
+                                    });
+                                  }, 1000);
+                                }
+                              },
+                            };
+                          },
+                        };
+                      },
+                      DocsUploadView: function () {
+                        return {};
+                      },
+                      Action: { PICKED: "picked" },
+                    },
+                  };
+                  callback();
+                }, 500);
+              }
+            },
+          };
+        }, 1000);
+      });
+
+    </script>
+  </body>
+</html>

@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PDF to Excel Converter | Convert PDF Tables to Excel Online</title>
+    <link rel="stylesheet" href="/static/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+
+  <style>
+    /* Global Styles */
+    :root {
+      --primary-color: #4a6bff;
+      --primary-hover: #3a5bef;
+      --secondary-color: #f8f9fa;
+      --text-color: #333;
+      --light-text: #777;
+      --border-color: #e0e0e0;
+      --success-color: #28a745;
+      --error-color: #dc3545;
+      --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      --border-radius: 8px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: "Poppins", sans-serif;
+      color: var(--text-color);
+      background-color: #f5f7ff;
+      line-height: 1.6;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    ul {
+      list-style: none;
+    }
+
+    /* Header Styles */
+    header {
+      background-color: white;
+      box-shadow: var(--box-shadow);
+      padding: 15px 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    header .container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo h1 {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--primary-color);
+    }
+
+    .logo h1 span {
+      color: var(--text-color);
+    }
+
+    .logo p {
+      font-size: 12px;
+      color: var(--light-text);
+      margin-top: -5px;
+    }
+
+    nav ul {
+      display: flex;
+      gap: 25px;
+    }
+
+    nav a {
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+
+    nav a:hover {
+      color: var(--primary-color);
+    }
+
+    nav a.active {
+      color: var(--primary-color);
+      font-weight: 600;
+    }
+
+    .auth-buttons {
+      display: flex;
+      gap: 10px;
+    }
+
+    .btn-login,
+    .btn-signup {
+      padding: 8px 20px;
+      border-radius: var(--border-radius);
+      font-weight: 500;
+      transition: all 0.3s;
+    }
+
+    .btn-login {
+      background: transparent;
+      border: 1px solid var(--primary-color);
+      color: var(--primary-color);
+    }
+
+    .btn-login:hover {
+      background-color: rgba(74, 107, 255, 0.1);
+    }
+
+    .btn-signup {
+      background-color: var(--primary-color);
+      border: 1px solid var(--primary-color);
+      color: white;
+    }
+
+    .btn-signup:hover {
+      background-color: var(--primary-hover);
+      border-color: var(--primary-hover);
+    }
+
+    /* Main Content Styles */
+    main {
+      padding: 40px 0;
+    }
+
+    .converter-container {
+      background-color: white;
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow);
+      padding: 40px;
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .converter-container h2 {
+      font-size: 32px;
+      margin-bottom: 10px;
+      color: var(--primary-color);
+    }
+
+    .subtitle {
+      color: var(--light-text);
+      margin-bottom: 30px;
+      font-size: 16px;
+    }
+
+    /* Dropzone Styles */
+    .dropzone {
+      border: 2px dashed var(--border-color);
+      border-radius: var(--border-radius);
+      padding: 40px;
+      transition: all 0.3s;
+      margin-bottom: 20px;
+    }
+
+    .dropzone.highlight {
+      border-color: var(--primary-color);
+      background-color: rgba(74, 107, 255, 0.05);
+    }
+
+    .dropzone-content {
+      margin-bottom: 20px;
+    }
+
+    .dropzone i {
+      font-size: 48px;
+      color: var(--primary-color);
+      margin-bottom: 15px;
+    }
+
+    .dropzone h3 {
+      font-size: 20px;
+      margin-bottom: 5px;
+    }
+
+    .dropzone p {
+      color: var(--light-text);
+      margin-bottom: 20px;
+    }
+
+    .btn-select {
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: var(--border-radius);
+      font-weight: 500;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .btn-select:hover {
+      background-color: var(--primary-hover);
+    }
+
+    .cloud-options {
+      border-top: 1px solid var(--border-color);
+      padding-top: 20px;
+    }
+
+    .cloud-options p {
+      color: var(--light-text);
+      margin-bottom: 10px;
+    }
+
+    .cloud-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+    }
+
+    .btn-cloud {
+      background-color: white;
+      border: 1px solid var(--border-color);
+      border-radius: var(--border-radius);
+      padding: 8px 15px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .btn-cloud:hover {
+      background-color: var(--secondary-color);
+    }
+
+    .btn-cloud i {
+      font-size: 18px;
+    }
+
+    .btn-cloud:nth-child(1) i {
+      color: #0061ff;
+    }
+
+    .btn-cloud:nth-child(2) i {
+      color: #34a853;
+    }
+
+    /* Conversion Options Styles */
+    .conversion-options {
+      text-align: left;
+      margin-bottom: 30px;
+    }
+
+    .file-info {
+      display: flex;
+      align-items: center;
+      background-color: var(--secondary-color);
+      padding: 15px;
+      border-radius: var(--border-radius);
+      margin-bottom: 20px;
+    }
+
+    .file-info i {
+      font-size: 24px;
+      color: var(--primary-color);
+      margin-right: 15px;
+    }
+
+    .file-details {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .file-details span:first-child {
+      font-weight: 500;
+    }
+
+    .file-details span:last-child {
+      font-size: 12px;
+      color: var(--light-text);
+    }
+
+    .btn-remove {
+      background: none;
+      border: none;
+      color: var(--light-text);
+      font-size: 18px;
+      cursor: pointer;
+      transition: color 0.3s;
+    }
+
+    .btn-remove:hover {
+      color: var(--error-color);
+    }
+
+    .btn-convert {
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: var(--border-radius);
+      font-weight: 500;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      width: 100%;
+      font-size: 16px;
+    }
+
+    .btn-convert:hover {
+      background-color: var(--primary-hover);
+    }
+
+    /* Result Container Styles */
+    .result-success {
+      padding: 30px;
+    }
+
+    .result-success i {
+      font-size: 48px;
+      color: var(--success-color);
+      margin-bottom: 15px;
+    }
+
+    .result-success h3 {
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+
+    .result-success p {
+      color: var(--light-text);
+      margin-bottom: 25px;
+    }
+
+    .btn-download {
+      background-color: var(--success-color);
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: var(--border-radius);
+      font-weight: 500;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      margin-right: 15px;
+      margin-bottom: 15px;
+    }
+
+    .btn-download:hover {
+      background-color: #218838;
+    }
+
+    .btn-new {
+      background-color: white;
+      color: var(--primary-color);
+      border: 1px solid var(--primary-color);
+      padding: 12px 24px;
+      border-radius: var(--border-radius);
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .btn-new:hover {
+      background-color: rgba(74, 107, 255, 0.1);
+    }
+
+    /* Features Styles */
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+      margin-top: 40px;
+    }
+
+    .feature {
+      background-color: var(--secondary-color);
+      padding: 25px;
+      border-radius: var(--border-radius);
+      text-align: center;
+    }
+
+    .feature i {
+      font-size: 36px;
+      color: var(--primary-color);
+      margin-bottom: 15px;
+    }
+
+    .feature h4 {
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+
+    .feature p {
+      color: var(--light-text);
+      font-size: 14px;
+    }
+
+    /* Footer Styles */
+    footer {
+      background-color: white;
+      padding: 50px 0 20px;
+      box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.05);
+    }
+
+    .footer-content {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 30px;
+      margin-bottom: 30px;
+    }
+
+    .footer-section h4 {
+      font-size: 18px;
+      margin-bottom: 15px;
+      color: var(--primary-color);
+    }
+
+    .footer-section p {
+      color: var(--light-text);
+      font-size: 14px;
+    }
+
+    .footer-section ul li {
+      margin-bottom: 10px;
+    }
+
+    .footer-section ul li a {
+      color: var(--light-text);
+      font-size: 14px;
+      transition: color 0.3s;
+    }
+
+    .footer-section ul li a:hover {
+      color: var(--primary-color);
+    }
+
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 20px;
+      border-top: 1px solid var(--border-color);
+    }
+
+    .footer-bottom p {
+      color: var(--light-text);
+      font-size: 14px;
+    }
+
+    .social-links {
+      display: flex;
+      gap: 15px;
+    }
+
+    .social-links a {
+      color: var(--light-text);
+      font-size: 18px;
+      transition: color 0.3s;
+    }
+
+    .social-links a:hover {
+      color: var(--primary-color);
+    }
+
+    /* Loading Modal Styles */
+    .loading-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.7);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .loading-content {
+      background-color: white;
+      padding: 30px;
+      border-radius: var(--border-radius);
+      text-align: center;
+      max-width: 400px;
+      width: 90%;
+    }
+
+    .spinner {
+      width: 50px;
+      height: 50px;
+      border: 5px solid rgba(74, 107, 255, 0.2);
+      border-radius: 50%;
+      border-top-color: var(--primary-color);
+      animation: spin 1s linear infinite;
+      margin: 0 auto 20px;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .loading-content h3 {
+      margin-bottom: 10px;
+    }
+
+    .loading-content p {
+      color: var(--light-text);
+    }
+
+    /* Utility Classes */
+    .hidden {
+      display: none !important;
+    }
+
+    /* Responsive Styles */
+    @media (max-width: 768px) {
+      header .container {
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      nav ul {
+        gap: 15px;
+      }
+
+      .converter-container {
+        padding: 30px 20px;
+      }
+
+      .dropzone {
+        padding: 30px 20px;
+      }
+
+      .cloud-buttons {
+        flex-direction: column;
+      }
+
+      .btn-download,
+      .btn-new {
+        width: 100%;
+        margin-right: 0;
+      }
+    }
+  </style>
+
+  <body>
+    <header>
+      <div class="container">
+        <div class="logo">
+          <h1>PDF<span>Excel</span></h1>
+          <p>Convert PDF to Excel online for free</p>
+        </div>
+        <nav>
+          <ul>
+            <li><a href="#" class="active">PDF to Excel</a></li>
+            <li><a href="#">Tools</a></li>
+            <li><a href="#">Pricing</a></li>
+            <li><a href="#">Help</a></li>
+          </ul>
+        </nav>
+        <div class="auth-buttons">
+          <button class="btn-login">Log In</button>
+          <button class="btn-signup">Sign Up</button>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <div class="container">
+        <div class="converter-container">
+          <h2>PDF to Excel Converter</h2>
+          <p class="subtitle">
+            Convert your PDF documents to Excel files with incredible accuracy
+          </p>
+
+          <div class="dropzone" id="dropzone">
+            <div class="dropzone-content">
+              <i class="fas fa-file-pdf"></i>
+              <h3>Select PDF file</h3>
+              <p>or drag and drop PDF here</p>
+              <button class="btn-select" id="selectFileBtn">
+                Select PDF File
+              </button>
+              <input
+                type="file"
+                id="fileInput"
+                accept=".pdf"
+                style="display: none"
+              />
+            </div>
+            <div class="cloud-options">
+              <p>Import from:</p>
+              <div class="cloud-buttons">
+                <button class="btn-cloud" id="dropboxBtn">
+                  <i class="fab fa-dropbox"></i> Dropbox
+                </button>
+                <button class="btn-cloud" id="driveBtn">
+                  <i class="fab fa-google-drive"></i> Google Drive
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="conversion-options hidden" id="conversionOptions">
+            <div class="file-info">
+              <i class="fas fa-file-pdf"></i>
+              <div class="file-details">
+                <span id="fileName">document.pdf</span>
+                <span id="fileSize">2.4 MB</span>
+              </div>
+              <button class="btn-remove" id="removeFileBtn">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+            <button class="btn-convert" id="convertBtn">
+              Convert to Excel
+            </button>
+          </div>
+
+          <div class="result-container hidden" id="resultContainer">
+            <div class="result-success">
+              <i class="fas fa-check-circle"></i>
+              <h3>Conversion complete!</h3>
+              <p>Your PDF has been converted to Excel successfully.</p>
+              <button class="btn-download" id="downloadBtn">
+                <i class="fas fa-download"></i> Download Excel File
+              </button>
+              <button class="btn-new" id="newFileBtn">
+                Convert Another File
+              </button>
+            </div>
+          </div>
+
+          <div class="features">
+            <div class="feature">
+              <i class="fas fa-bolt"></i>
+              <h4>Fast Conversion</h4>
+              <p>
+                Convert your PDF to Excel in seconds with our powerful engine.
+              </p>
+            </div>
+            <div class="feature">
+              <i class="fas fa-shield-alt"></i>
+              <h4>Secure Processing</h4>
+              <p>
+                Your files are secure and deleted from our servers after
+                processing.
+              </p>
+            </div>
+            <div class="feature">
+              <i class="fas fa-chart-line"></i>
+              <h4>High Accuracy</h4>
+              <p>
+                Get the most accurate Excel conversion with preserved
+                formatting.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer>
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-section">
+            <h4>PDFExcel</h4>
+            <p>
+              The best online PDF to Excel converter. Free to use, no
+              registration required.
+            </p>
+          </div>
+          <div class="footer-section">
+            <h4>Products</h4>
+            <ul>
+              <li><a href="#">PDF to Word</a></li>
+              <li><a href="#">PDF to Excel</a></li>
+              <li><a href="#">PDF to PPT</a></li>
+              <li><a href="#">PDF to Image</a></li>
+            </ul>
+          </div>
+          <div class="footer-section">
+            <h4>Company</h4>
+            <ul>
+              <li><a href="#">About Us</a></li>
+              <li><a href="#">Blog</a></li>
+              <li><a href="#">Careers</a></li>
+              <li><a href="#">Contact</a></li>
+            </ul>
+          </div>
+          <div class="footer-section">
+            <h4>Support</h4>
+            <ul>
+              <li><a href="#">Help Center</a></li>
+              <li><a href="#">FAQ</a></li>
+              <li><a href="#">Privacy Policy</a></li>
+              <li><a href="#">Terms of Service</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>&copy; 2023 PDFExcel. All rights reserved.</p>
+          <div class="social-links">
+            <a href="#"><i class="fab fa-facebook"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-linkedin"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <div class="loading-modal hidden" id="loadingModal">
+      <div class="loading-content">
+        <div class="spinner"></div>
+        <h3>Converting PDF to Excel...</h3>
+        <p>Please wait while we process your file.</p>
+      </div>
+    </div>
+
+   <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const dropzone = document.getElementById('dropzone');
+            const fileInput = document.getElementById('fileInput');
+            const selectFileBtn = document.getElementById('selectFileBtn');
+            const conversionOptions = document.getElementById('conversionOptions');
+            const resultContainer = document.getElementById('resultContainer');
+            const convertBtn = document.getElementById('convertBtn');
+            const downloadBtn = document.getElementById('downloadBtn');
+            const newFileBtn = document.getElementById('newFileBtn');
+            const removeFileBtn = document.getElementById('removeFileBtn');
+            const fileName = document.getElementById('fileName');
+            const fileSize = document.getElementById('fileSize');
+            const loadingModal = document.getElementById('loadingModal');
+            
+            let currentFile = null;
+            let downloadUrl = '';
+            
+            // Handle file selection via button
+            selectFileBtn.addEventListener('click', () => fileInput.click());
+            
+            // Handle file input change
+            fileInput.addEventListener('change', handleFileSelect);
+            
+            // Handle drag and drop
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                dropzone.addEventListener(eventName, preventDefaults, false);
+            });
+            
+            function preventDefaults(e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+            
+            ['dragenter', 'dragover'].forEach(eventName => {
+                dropzone.addEventListener(eventName, highlight, false);
+            });
+            
+            ['dragleave', 'drop'].forEach(eventName => {
+                dropzone.addEventListener(eventName, unhighlight, false);
+            });
+            
+            function highlight() {
+                dropzone.classList.add('highlight');
+            }
+            
+            function unhighlight() {
+                dropzone.classList.remove('highlight');
+            }
+            
+            dropzone.addEventListener('drop', handleDrop, false);
+            
+            function handleDrop(e) {
+                const dt = e.dataTransfer;
+                const files = dt.files;
+                
+                if (files.length > 0) {
+                    handleFiles(files);
+                }
+            }
+            
+            function handleFileSelect(e) {
+                const files = e.target.files;
+                if (files.length > 0) {
+                    handleFiles(files);
+                }
+            }
+            
+            function handleFiles(files) {
+                const file = files[0];
+                
+                // Check if file is PDF
+                if (!file.type.includes('pdf') && !file.name.toLowerCase().endsWith('.pdf')) {
+                    alert('Please select a PDF file.');
+                    return;
+                }
+                
+                // Check file size (max 16MB)
+                if (file.size > 16 * 1024 * 1024) {
+                    alert('File size exceeds 16MB limit.');
+                    return;
+                }
+                
+                currentFile = file;
+                updateFileInfo(file);
+                showConversionOptions();
+            }
+            
+            function updateFileInfo(file) {
+                fileName.textContent = file.name;
+                fileSize.textContent = formatFileSize(file.size);
+            }
+            
+            function formatFileSize(bytes) {
+                if (bytes === 0) return '0 Bytes';
+                const k = 1024;
+                const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+                const i = Math.floor(Math.log(bytes) / Math.log(k));
+                return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+            }
+            
+            function showConversionOptions() {
+                dropzone.classList.add('hidden');
+                conversionOptions.classList.remove('hidden');
+                resultContainer.classList.add('hidden');
+            }
+            
+            function showResult() {
+                dropzone.classList.add('hidden');
+                conversionOptions.classList.add('hidden');
+                resultContainer.classList.remove('hidden');
+            }
+            
+            function resetConverter() {
+                currentFile = null;
+                downloadUrl = '';
+                fileInput.value = '';
+                dropzone.classList.remove('hidden');
+                conversionOptions.classList.add('hidden');
+                resultContainer.classList.add('hidden');
+            }
+            
+            // Convert button click
+            convertBtn.addEventListener('click', async () => {
+                if (!currentFile) return;
+                
+                loadingModal.classList.remove('hidden');
+                
+                try {
+                    const formData = new FormData();
+                    formData.append('file', currentFile);
+                    
+                    const response = await fetch('pdf_to_excel/convert', {
+                        method: 'POST',
+                        body: formData
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (data.success) {
+                        downloadUrl = data.download_url;
+                        showResult();
+                    } else {
+                        alert(data.error || 'Conversion failed. Please try again.');
+                    }
+                } catch (error) {
+                    alert('An error occurred during conversion. Please try again.');
+                    console.error('Conversion error:', error);
+                } finally {
+                    loadingModal.classList.add('hidden');
+                }
+            });
+            
+            // Download button click
+            downloadBtn.addEventListener('click', () => {
+                if (downloadUrl) {
+                    window.location.href = downloadUrl;
+                }
+            });
+            
+            // New file button click
+            newFileBtn.addEventListener('click', resetConverter);
+            
+            // Remove file button click
+            removeFileBtn.addEventListener('click', resetConverter);
+            
+            // Cloud service buttons (placeholder functionality)
+            document.getElementById('dropboxBtn').addEventListener('click', () => {
+                alert('Dropbox integration would be implemented here');
+            });
+            
+            document.getElementById('driveBtn').addEventListener('click', () => {
+                alert('Google Drive integration would be implemented here');
+            });
+        });
+    </script>
+  </body>
+</html>

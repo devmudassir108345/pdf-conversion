@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DeepSeek PDF Tools</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background: #f4f4f4;
+      }
+      header {
+        background: #4a90e2;
+        color: white;
+        padding: 20px;
+        text-align: center;
+      }
+      main {
+        padding: 20px;
+        max-width: 1000px;
+        margin: auto;
+      }
+      h2 {
+        color: #333;
+        margin-top: 40px;
+      }
+      ul {
+        list-style: none;
+        padding: 0;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+      }
+      li a {
+        display: block;
+        padding: 15px 20px;
+        background: white;
+        border-radius: 8px;
+        text-decoration: none;
+        color: #4a90e2;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        transition: all 0.2s ease;
+      }
+      li a:hover {
+        background: #4a90e2;
+        color: white;
+      }
+      @media (max-width: 600px) {
+        li a {
+          width: 100%;
+          box-sizing: border-box;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Welcome to PDF CONVERSION tools</h1>
+      <p>Select any tool below to get started</p>
+    </header>
+
+    <main>
+      <ul>
+        <li><a href="/tools/pdf-to-word">PDF to Word</a></li>
+        <li><a href="/tools/word_to_pdf">Word to PDF</a></li>
+        <li><a href="tools/pdf_to_ppt">PDF to PPT</a></li>
+        <li><a href="tools/ppt_to_pdf">PPT to PDF</a></li>
+        <li><a href="/tools/excel_to_pdf">Excel to PDF</a></li>
+        <li><a href="/tools/pdf_to_excel">PDF to Excel</a></li>
+        <li>
+          <a href="{{ url_for('static', filename='compress-pdf.html') }}"
+            >Compress PDF</a
+          >
+        </li>
+
+        <li>
+          <a href="{{ url_for('static', filename='img-to-pdf.html') }}"
+            >Image to PDF</a
+          >
+        </li>
+        <li>
+          <a href="{{ url_for('static', filename='jpg-to-pdf.html') }}"
+            >JPG to PDF</a
+          >
+        </li>
+
+        <li>
+          <a href="{{ url_for('static', filename='merge-pdf.html') }}"
+            >Merge PDFs</a
+          >
+        </li>
+
+        <li>
+          <a href="{{ url_for('static', filename='pdf-to-img.html') }}"
+            >PDF to Image</a
+          >
+        </li>
+        <li>
+          <a href="{{ url_for('static', filename='pdf-watermark.html') }}"
+            >Add Watermark</a
+          >
+        </li>
+        <li>
+          <a href="{{ url_for('static', filename='suplit-pdf.html') }}"
+            >Split PDF</a
+          >
+        </li>
+        <!-- Add more Flask tools if needed -->
+      </ul>
+    </main>
+  </body>
+</html>

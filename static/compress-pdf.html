@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PDF Compressor | Reduce PDF File Size</title>
+    <style>
+      :root {
+        --primary-color: #2d7ff9;
+        --primary-hover: #1a6de4;
+        --secondary-color: #f8f9fa;
+        --text-color: #333;
+        --light-text: #666;
+        --border-color: #e0e0e0;
+        --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        --transition: all 0.3s ease;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      body {
+        background-color: #f5f7fa;
+        color: var(--text-color);
+        line-height: 1.6;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+
+      header {
+        background-color: white;
+        box-shadow: var(--shadow);
+        padding: 15px 0;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+
+      .header-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .logo {
+        font-size: 24px;
+        font-weight: bold;
+        color: var(--primary-color);
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+      }
+
+      .logo i {
+        margin-right: 10px;
+        font-size: 28px;
+      }
+
+      .nav-links {
+        display: flex;
+        list-style: none;
+      }
+
+      .nav-links li {
+        margin-left: 25px;
+      }
+
+      .nav-links a {
+        text-decoration: none;
+        color: var(--text-color);
+        font-weight: 500;
+        transition: var(--transition);
+      }
+
+      .nav-links a:hover {
+        color: var(--primary-color);
+      }
+
+      .main {
+        padding: 50px 0;
+        text-align: center;
+      }
+
+      .tool-title {
+        font-size: 36px;
+        margin-bottom: 20px;
+        color: var(--text-color);
+      }
+
+      .tool-description {
+        font-size: 18px;
+        color: var(--light-text);
+        max-width: 700px;
+        margin: 0 auto 40px;
+      }
+
+      .tool-card {
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: var(--shadow);
+        padding: 40px;
+        max-width: 800px;
+        margin: 0 auto;
+        transition: var(--transition);
+      }
+
+      .upload-area {
+        border: 2px dashed var(--border-color);
+        border-radius: 8px;
+        padding: 40px 20px;
+        margin-bottom: 30px;
+        cursor: pointer;
+        transition: var(--transition);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .upload-area:hover {
+        border-color: var(--primary-color);
+      }
+
+      .upload-area.active {
+        border-color: var(--primary-color);
+        background-color: rgba(45, 127, 249, 0.05);
+      }
+
+      .upload-icon {
+        font-size: 48px;
+        color: var(--primary-color);
+        margin-bottom: 15px;
+      }
+
+      .upload-title {
+        font-size: 22px;
+        margin-bottom: 10px;
+      }
+
+      .upload-subtitle {
+        color: var(--light-text);
+        margin-bottom: 20px;
+      }
+
+      .btn {
+        display: inline-block;
+        background-color: var(--primary-color);
+        color: white;
+        padding: 12px 24px;
+        border-radius: 6px;
+        text-decoration: none;
+        font-weight: 500;
+        border: none;
+        cursor: pointer;
+        transition: var(--transition);
+        font-size: 16px;
+      }
+
+      .btn:hover {
+        background-color: var(--primary-hover);
+        transform: translateY(-2px);
+      }
+
+      .btn-outline {
+        background-color: transparent;
+        border: 1px solid var(--primary-color);
+        color: var(--primary-color);
+      }
+
+      .btn-outline:hover {
+        background-color: rgba(45, 127, 249, 0.1);
+        color: var(--primary-hover);
+        transform: none;
+      }
+
+      .btn-disabled {
+        background-color: #ccc;
+        cursor: not-allowed;
+      }
+
+      .btn-disabled:hover {
+        transform: none;
+        background-color: #ccc;
+      }
+
+      .options-section {
+        text-align: left;
+        margin-top: 30px;
+        padding-top: 20px;
+        border-top: 1px solid var(--border-color);
+      }
+
+      .options-title {
+        font-size: 18px;
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+      }
+
+      .options-title i {
+        margin-right: 10px;
+        color: var(--primary-color);
+      }
+
+      .compression-options {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+        margin-bottom: 20px;
+      }
+
+      .option-btn {
+        padding: 10px 20px;
+        border: 1px solid var(--border-color);
+        border-radius: 6px;
+        cursor: pointer;
+        transition: var(--transition);
+        background-color: white;
+      }
+
+      .option-btn:hover {
+        border-color: var(--primary-color);
+        color: var(--primary-color);
+      }
+
+      .option-btn.active {
+        background-color: var(--primary-color);
+        color: white;
+        border-color: var(--primary-color);
+      }
+
+      .file-info {
+        display: none;
+        margin-top: 20px;
+        padding: 15px;
+        background-color: var(--secondary-color);
+        border-radius: 8px;
+        text-align: left;
+      }
+
+      .file-info.active {
+        display: block;
+        animation: fadeIn 0.3s ease;
+      }
+
+      .file-details {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 10px;
+      }
+
+      .file-name {
+        font-weight: 500;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        max-width: 70%;
+      }
+
+      .file-size {
+        color: var(--light-text);
+      }
+
+      .progress-bar {
+        height: 6px;
+        background-color: #e0e0e0;
+        border-radius: 3px;
+        margin-top: 10px;
+        overflow: hidden;
+      }
+
+      .progress {
+        height: 100%;
+        background-color: var(--primary-color);
+        width: 0;
+        transition: width 0.3s ease;
+      }
+
+      .result-section {
+        display: none;
+        margin-top: 30px;
+        animation: fadeIn 0.5s ease;
+      }
+
+      .result-section.active {
+        display: block;
+      }
+
+      .result-card {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px;
+        background-color: var(--secondary-color);
+        border-radius: 8px;
+        margin-bottom: 20px;
+      }
+
+      .result-info {
+        flex: 1;
+        text-align: left;
+      }
+
+      .result-stats {
+        display: flex;
+        gap: 20px;
+        margin-top: 10px;
+      }
+
+      .stat-item {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .stat-label {
+        font-size: 14px;
+        color: var(--light-text);
+      }
+
+      .stat-value {
+        font-weight: 600;
+      }
+
+      .compression-badge {
+        background-color: #4caf50;
+        color: white;
+        padding: 4px 10px;
+        border-radius: 4px;
+        font-size: 14px;
+        margin-left: 10px;
+      }
+
+      .action-btns {
+        display: flex;
+        gap: 15px;
+      }
+
+      .dropbtn {
+        background-color: white;
+        color: var(--text-color);
+        padding: 10px 15px;
+        border: 1px solid var(--border-color);
+        border-radius: 6px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        transition: var(--transition);
+      }
+
+      .dropbtn:hover {
+        border-color: var(--primary-color);
+        color: var(--primary-color);
+      }
+
+      .dropdown {
+        position: relative;
+        display: inline-block;
+      }
+
+      .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: white;
+        min-width: 200px;
+        box-shadow: var(--shadow);
+        border-radius: 6px;
+        z-index: 1;
+        right: 0;
+        top: 100%;
+        margin-top: 5px;
+        animation: fadeIn 0.2s ease;
+      }
+
+      .dropdown-content a {
+        color: var(--text-color);
+        padding: 12px 16px;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        transition: var(--transition);
+      }
+
+      .dropdown-content a:hover {
+        background-color: var(--secondary-color);
+        color: var(--primary-color);
+      }
+
+      .dropdown:hover .dropdown-content {
+        display: block;
+      }
+
+      .dropdown:hover .dropbtn {
+        border-color: var(--primary-color);
+        color: var(--primary-color);
+      }
+
+      .source-btns {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        margin-bottom: 20px;
+      }
+
+      footer {
+        background-color: white;
+        padding: 30px 0;
+        margin-top: 50px;
+        box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.05);
+      }
+
+      .footer-content {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 30px;
+      }
+
+      .footer-section {
+        flex: 1;
+        min-width: 200px;
+      }
+
+      .footer-title {
+        font-size: 18px;
+        margin-bottom: 15px;
+        color: var(--text-color);
+      }
+
+      .footer-links {
+        list-style: none;
+      }
+
+      .footer-links li {
+        margin-bottom: 10px;
+      }
+
+      .footer-links a {
+        text-decoration: none;
+        color: var(--light-text);
+        transition: var(--transition);
+      }
+
+      .footer-links a:hover {
+        color: var(--primary-color);
+      }
+
+      .copyright {
+        text-align: center;
+        margin-top: 30px;
+        padding-top: 20px;
+        border-top: 1px solid var(--border-color);
+        color: var(--light-text);
+        font-size: 14px;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      .spinner {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        border: 3px solid rgba(255, 255, 255, 0.3);
+        border-radius: 50%;
+        border-top-color: white;
+        animation: spin 1s ease-in-out infinite;
+        margin-right: 8px;
+      }
+
+      /* Responsive styles */
+      @media (max-width: 768px) {
+        .tool-title {
+          font-size: 28px;
+        }
+
+        .tool-description {
+          font-size: 16px;
+        }
+
+        .tool-card {
+          padding: 30px 20px;
+        }
+
+        .source-btns {
+          flex-direction: column;
+          align-items: center;
+        }
+
+        .result-card {
+          flex-direction: column;
+          text-align: center;
+        }
+
+        .result-info {
+          text-align: center;
+          margin-bottom: 15px;
+        }
+
+        .result-stats {
+          justify-content: center;
+        }
+
+        .action-btns {
+          width: 100%;
+          flex-direction: column;
+        }
+
+        .btn {
+          width: 100%;
+        }
+      }
+    </style>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+  </head>
+  <body>
+    <header>
+      <div class="container header-content">
+        <a href="#" class="logo">
+          <i class="fas fa-file-pdf"></i>
+          PDF Tools
+        </a>
+        <ul class="nav-links">
+          <li><a href="#">Home</a></li>
+          <li><a href="#">Tools</a></li>
+          <li><a href="#">About</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+    </header>
+
+    <main class="main">
+      <div class="container">
+        <h1 class="tool-title">Compress PDF</h1>
+        <p class="tool-description">
+          Reduce file size while optimizing for maximal PDF quality. Select your
+          file and choose compression level.
+        </p>
+
+        <div class="tool-card">
+          <div class="source-btns">
+            <button class="btn btn-outline" id="localBtn">
+              <i class="fas fa-upload"></i> Select PDF file
+            </button>
+            <div class="dropdown">
+              <button class="dropbtn">
+                <i class="fas fa-cloud"></i> Google Drive
+                <i class="fas fa-chevron-down"></i>
+              </button>
+              <div class="dropdown-content">
+                <a href="#" id="googleDriveBtn">
+                  <i class="fab fa-google-drive"></i> Import from Drive
+                </a>
+                <a href="#" id="dropboxBtn">
+                  <i class="fab fa-dropbox"></i> Import from Dropbox
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div class="upload-area" id="uploadArea">
+            <div class="upload-icon">
+              <i class="fas fa-file-pdf"></i>
+            </div>
+            <h3 class="upload-title">Drag & drop your PDF file here</h3>
+            <p class="upload-subtitle">or click to browse files</p>
+            <button class="btn btn-outline">Select PDF file</button>
+            <input
+              type="file"
+              id="fileInput"
+              accept=".pdf"
+              style="display: none"
+            />
+          </div>
+
+          <div class="file-info" id="fileInfo">
+            <div class="file-details">
+              <div class="file-name" id="fileName">document.pdf</div>
+              <div class="file-size" id="fileSize">2.4 MB</div>
+            </div>
+            <div class="progress-bar">
+              <div class="progress" id="progressBar"></div>
+            </div>
+          </div>
+
+          <div class="options-section">
+            <h3 class="options-title">
+              <i class="fas fa-cog"></i> Compression Options
+            </h3>
+            <div class="compression-options">
+              <button class="option-btn active" data-level="low">
+                Low Compression (Best Quality)
+              </button>
+              <button class="option-btn" data-level="medium">
+                Medium Compression
+              </button>
+              <button class="option-btn" data-level="high">
+                High Compression (Smaller Size)
+              </button>
+            </div>
+          </div>
+
+          <button class="btn btn-disabled" id="compressBtn" disabled>
+            Compress PDF
+          </button>
+
+          <div class="result-section" id="resultSection">
+            <div class="result-card">
+              <div class="result-info">
+                <div class="file-name">compressed_document.pdf</div>
+                <div class="result-stats">
+                  <div class="stat-item">
+                    <span class="stat-label">Original Size</span>
+                    <span class="stat-value" id="originalSize">2.4 MB</span>
+                  </div>
+                  <div class="stat-item">
+                    <span class="stat-label">Compressed Size</span>
+                    <span class="stat-value" id="compressedSize">1.2 MB</span>
+                  </div>
+                  <div class="stat-item">
+                    <span class="stat-label">Reduction</span>
+                    <span class="stat-value" id="reduction">50%</span>
+                  </div>
+                </div>
+              </div>
+              <div class="action-btns">
+                <button class="btn" id="downloadBtn">
+                  <i class="fas fa-download"></i> Download
+                </button>
+                <button class="btn btn-outline" id="newFileBtn">
+                  <i class="fas fa-redo"></i> New File
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer>
+      <div class="container footer-content">
+        <div class="footer-section">
+          <h3 class="footer-title">PDF Tools</h3>
+          <ul class="footer-links">
+            <li><a href="#">Compress PDF</a></li>
+            <li><a href="#">JPG to PDF</a></li>
+            <li><a href="#">PDF to Word</a></li>
+            <li><a href="#">PDF to Excel</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h3 class="footer-title">Company</h3>
+          <ul class="footer-links">
+            <li><a href="#">About Us</a></li>
+            <li><a href="#">Blog</a></li>
+            <li><a href="#">Careers</a></li>
+            <li><a href="#">Contact</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h3 class="footer-title">Support</h3>
+          <ul class="footer-links">
+            <li><a href="#">Help Center</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+            <li><a href="#">Terms of Service</a></li>
+            <li><a href="#">Cookies</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="container copyright">
+        <p>&copy; 2023 PDF Tools. All rights reserved.</p>
+      </div>
+    </footer>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // DOM Elements
+        const uploadArea = document.getElementById("uploadArea");
+        const fileInput = document.getElementById("fileInput");
+        const fileInfo = document.getElementById("fileInfo");
+        const fileName = document.getElementById("fileName");
+        const fileSize = document.getElementById("fileSize");
+        const progressBar = document.getElementById("progressBar");
+        const compressBtn = document.getElementById("compressBtn");
+        const resultSection = document.getElementById("resultSection");
+        const originalSize = document.getElementById("originalSize");
+        const compressedSize = document.getElementById("compressedSize");
+        const reduction = document.getElementById("reduction");
+        const downloadBtn = document.getElementById("downloadBtn");
+        const newFileBtn = document.getElementById("newFileBtn");
+        const localBtn = document.getElementById("localBtn");
+        const googleDriveBtn = document.getElementById("googleDriveBtn");
+        const dropboxBtn = document.getElementById("dropboxBtn");
+        const optionBtns = document.querySelectorAll(".option-btn");
+
+        // Variables
+        let selectedFile = null;
+        let compressionLevel = "low";
+        let compressedPDF = null;
+
+        // Event Listeners
+        uploadArea.addEventListener("click", () => fileInput.click());
+        localBtn.addEventListener("click", () => fileInput.click());
+
+        fileInput.addEventListener("change", handleFileSelect);
+        uploadArea.addEventListener("dragover", handleDragOver);
+        uploadArea.addEventListener("dragleave", handleDragLeave);
+        uploadArea.addEventListener("drop", handleDrop);
+
+        compressBtn.addEventListener("click", compressPDF);
+        downloadBtn.addEventListener("click", downloadPDF);
+        newFileBtn.addEventListener("click", resetTool);
+
+        googleDriveBtn.addEventListener("click", () =>
+          alert("Google Drive integration would be implemented here")
+        );
+        dropboxBtn.addEventListener("click", () =>
+          alert("Dropbox integration would be implemented here")
+        );
+
+        optionBtns.forEach((btn) => {
+          btn.addEventListener("click", () => {
+            optionBtns.forEach((b) => b.classList.remove("active"));
+            btn.classList.add("active");
+            compressionLevel = btn.dataset.level;
+          });
+        });
+
+        // Functions
+        function handleFileSelect(e) {
+          const file = e.target.files[0];
+          if (file && file.type === "application/pdf") {
+            processSelectedFile(file);
+          } else {
+            alert("Please select a valid PDF file.");
+          }
+        }
+
+        function handleDragOver(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          uploadArea.classList.add("active");
+        }
+
+        function handleDragLeave(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          uploadArea.classList.remove("active");
+        }
+
+        function handleDrop(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          uploadArea.classList.remove("active");
+
+          const file = e.dataTransfer.files[0];
+          if (file && file.type === "application/pdf") {
+            processSelectedFile(file);
+          } else {
+            alert("Please drop a valid PDF file.");
+          }
+        }
+
+        function processSelectedFile(file) {
+          selectedFile = file;
+          fileName.textContent = file.name;
+          fileSize.textContent = formatFileSize(file.size);
+          fileInfo.classList.add("active");
+          compressBtn.disabled = false;
+          compressBtn.classList.remove("btn-disabled");
+
+          // Simulate progress bar
+          let progress = 0;
+          const interval = setInterval(() => {
+            progress += 5;
+            progressBar.style.width = `${progress}%`;
+
+            if (progress >= 100) {
+              clearInterval(interval);
+            }
+          }, 50);
+        }
+
+        function compressPDF() {
+          if (!selectedFile) return;
+
+          // Show loading state
+          compressBtn.innerHTML =
+            '<span class="spinner"></span> Compressing...';
+          compressBtn.disabled = true;
+
+          // Simulate compression process
+          setTimeout(() => {
+            // In a real app, you would use a PDF compression library here
+            // For demo purposes, we'll simulate the result
+            const originalSizeBytes = selectedFile.size;
+            let compressedSizeBytes;
+
+            switch (compressionLevel) {
+              case "low":
+                compressedSizeBytes = originalSizeBytes * 0.8; // 20% reduction
+                break;
+              case "medium":
+                compressedSizeBytes = originalSizeBytes * 0.6; // 40% reduction
+                break;
+              case "high":
+                compressedSizeBytes = originalSizeBytes * 0.5; // 50% reduction
+                break;
+              default:
+                compressedSizeBytes = originalSizeBytes * 0.7;
+            }
+
+            const reductionPercent = Math.round(
+              (1 - compressedSizeBytes / originalSizeBytes) * 100
+            );
+
+            // Create a mock compressed file for download
+            compressedPDF = new Blob([selectedFile], {
+              type: "application/pdf",
+            });
+
+            // Update UI with results
+            originalSize.textContent = formatFileSize(originalSizeBytes);
+            compressedSize.textContent = formatFileSize(compressedSizeBytes);
+            reduction.textContent = `${reductionPercent}%`;
+
+            // Show result section
+            resultSection.classList.add("active");
+
+            // Reset compress button
+            compressBtn.innerHTML = "Compress PDF";
+            compressBtn.disabled = false;
+          }, 2000);
+        }
+
+        function downloadPDF() {
+          if (!compressedPDF) return;
+
+          const url = URL.createObjectURL(compressedPDF);
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = `compressed_${selectedFile.name}`;
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          URL.revokeObjectURL(url);
+        }
+
+        function resetTool() {
+          // Reset all elements to initial state
+          selectedFile = null;
+          compressedPDF = null;
+          fileInput.value = "";
+          fileInfo.classList.remove("active");
+          resultSection.classList.remove("active");
+          progressBar.style.width = "0";
+          compressBtn.disabled = true;
+          compressBtn.classList.add("btn-disabled");
+
+          // Reset compression option to default
+          optionBtns.forEach((btn) => btn.classList.remove("active"));
+          optionBtns[0].classList.add("active");
+          compressionLevel = "low";
+        }
+
+        function formatFileSize(bytes) {
+          if (bytes === 0) return "0 Bytes";
+          const k = 1024;
+          const sizes = ["Bytes", "KB", "MB", "GB"];
+          const i = Math.floor(Math.log(bytes) / Math.log(k));
+          return (
+            parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i]
+          );
+        }
+      });
+    </script>
+  </body>
+</html>
