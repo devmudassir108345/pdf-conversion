@@ -1,10 +1,7 @@
-blinker==1.9.0
-cffi==1.17.1
-charset-normalizer==3.4.2
-click==8.1.8
+
+
 colorama==0.4.6
 comtypes==1.1.11
-cryptography==44.0.3
 distro==1.9.0
 docx2pdf==0.1.8
 et_xmlfile==2.0.0
@@ -46,7 +43,7 @@ python-dotenv==1.0.0
 python-pptx==0.6.21
 pytweening==1.2.0
 pytz==2025.2
-pywin32==310
+
 setuptools==80.7.1
 six==1.17.0
 tabula-py==2.7.0
@@ -59,4 +56,4 @@ Werkzeug==2.3.7
 wheel==0.45.1
 xlrd==2.0.1
 XlsxWriter==3.2.3
-yt-dlp==2025.2.19
+
