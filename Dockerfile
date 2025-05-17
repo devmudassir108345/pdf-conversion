@@ -1,22 +1,29 @@
+# Base image - Python 3.11 slim version
 FROM python:3.11-slim
 
-# Install required system libraries including libgl1 and libgthread
-RUN apt-get update && apt-get install -y \
-    libgl1 \
-    libglib2.0-0 \
-    libgthread-2.0-0 \
-    && rm -rf /var/lib/apt/lists/*
-
+# Set working directory inside container
 WORKDIR /app
 
+# Install system dependencies needed for your packages
+RUN apt-get update && apt-get install -y \
+    libgl1-mesa-glx \
+    libglib2.0-0 \
+    libsm6 \
+    libxext6 \
+    libxrender1 \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy requirements.txt to container
 COPY requirements.txt .
 
-RUN python -m venv /opt/venv && \
-    /opt/venv/bin/pip install --upgrade pip && \
-    /opt/venv/bin/pip install -r requirements.txt
+# Install Python dependencies from requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
+# Copy rest of your app code to container
 COPY . .
 
-ENV PATH="/opt/venv/bin:$PATH"
+# Expose port if using Flask default port (optional)
+EXPOSE 5000
 
-CMD ["gunicorn", "app:app", "--bind", "0.0.0.0:$PORT"]
+# Run your app (change app.py if your main file is different)
+CMD ["python", "app.py"]
