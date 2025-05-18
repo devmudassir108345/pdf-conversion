@@ -84,12 +84,19 @@
 
 
 
+
+
+
 import os
 import tempfile
 import shutil
+import io
 from flask import Blueprint, render_template, request, send_file, jsonify, url_for
 from werkzeug.utils import secure_filename
-from docx2pdf import convert
+from docx import Document
+from reportlab.lib.pagesizes import letter
+from reportlab.pdfgen import canvas
+from PIL import Image
 import pythoncom
 
 word_to_pdf_bp = Blueprint('word_to_pdf', __name__, template_folder='../templates')
@@ -122,13 +129,34 @@ def clear_directory(directory):
         except Exception as e:
             print(f'Failed to delete {file_path}. Reason: {e}')
 
-@word_to_pdf_bp.route('word_to_pdf', methods=['GET'])
+def convert_docx_to_pdf(docx_path, pdf_path):
+    """Convert DOCX to PDF using python-docx and reportlab"""
+    document = Document(docx_path)
+    c = canvas.Canvas(pdf_path, pagesize=letter)
+    width, height = letter
+    
+    y_position = height - 50  # Start position
+    
+    for para in document.paragraphs:
+        text = para.text
+        if text.strip():  # Only process non-empty paragraphs
+            c.setFont("Helvetica", 12)
+            c.drawString(50, y_position, text)
+            y_position -= 20
+            
+            if y_position < 50:  # New page if we reach bottom
+                c.showPage()
+                y_position = height - 50
+    
+    c.save()
+
+@word_to_pdf_bp.route('/word_to_pdf', methods=['GET'])
 def index():
     clear_directory(word_to_pdf_bp.upload_folder)
     clear_directory(word_to_pdf_bp.output_folder)
     return render_template('word_to_pdf.html')
 
-@word_to_pdf_bp.route('word_to_pdf/convert', methods=['POST'])
+@word_to_pdf_bp.route('/word_to_pdf/convert', methods=['POST'])
 def convert_file():
     if 'files[]' not in request.files:
         return jsonify({'success': False, 'error': 'No files uploaded'}), 400
@@ -169,8 +197,6 @@ def convert_file():
     temp_dir = tempfile.mkdtemp()
     
     try:
-        pythoncom.CoInitialize()
-        
         for file in valid_files:
             try:
                 cleaned_name = clean_filename(file.filename)
@@ -180,7 +206,7 @@ def convert_file():
                 output_path = os.path.join(temp_dir, output_filename)
                 
                 file.save(input_path)
-                convert(input_path, output_path)
+                convert_docx_to_pdf(input_path, output_path)
                 
                 final_output_path = os.path.join(word_to_pdf_bp.output_folder, output_filename)
                 shutil.move(output_path, final_output_path)
@@ -207,7 +233,6 @@ def convert_file():
         }), 500
         
     finally:
-        pythoncom.CoUninitialize()
         shutil.rmtree(temp_dir, ignore_errors=True)
     
     return jsonify({
