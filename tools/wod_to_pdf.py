@@ -1,103 +1,20 @@
 
 
-# import os
-# import uuid
-# from flask import Blueprint, render_template, request, jsonify, send_file
-# from flask import current_app as app
-# from werkzeug.utils import secure_filename
-# from docx2pdf import convert
-
-# word_to_pdf_bp = Blueprint('word_to_pdf', __name__, template_folder='../templates')
-
-# # Configuration (used if needed inside the blueprint)
-# word_to_pdf_bp.upload_folder = 'uploads'
-# word_to_pdf_bp.output_folder = 'outputs'
-# word_to_pdf_bp.allowed_extensions = {'doc', 'docx'}
-
-# # Ensure folders exist
-# os.makedirs(word_to_pdf_bp.upload_folder, exist_ok=True)
-# os.makedirs(word_to_pdf_bp.output_folder, exist_ok=True)
-
-# def allowed_file(filename):
-#     return '.' in filename and filename.rsplit('.', 1)[1].lower() in word_to_pdf_bp.allowed_extensions
-
-# @word_to_pdf_bp.route('word_to_pdf')
-# def index():
-#     return render_template('word_to_pdf.html')  # Create this template
-
-# @word_to_pdf_bp.route('word_to_pdf/convert', methods=['POST'])
-# def convert_word_to_pdf():
-#     if 'file' not in request.files:
-#         return jsonify({'error': 'No file part'}), 400
-
-#     file = request.files['file']
-
-#     if file.filename == '':
-#         return jsonify({'error': 'No selected file'}), 400
-
-#     if file and allowed_file(file.filename):
-#         unique_id = str(uuid.uuid4())
-#         word_filename = secure_filename(f"{unique_id}_{file.filename}")
-#         word_path = os.path.join(word_to_pdf_bp.upload_folder, word_filename)
-#         file.save(word_path)
-
-#         pdf_filename = word_filename.replace('.docx', '.pdf').replace('.doc', '.pdf')
-#         pdf_path = os.path.join(word_to_pdf_bp.output_folder, pdf_filename)
-
-#         try:
-#             convert(word_path, pdf_path)
-#             os.remove(word_path)
-
-#             return jsonify({
-#                 'success': True,
-#              'download_url': f'word_to_pdf/download/{pdf_filename}',
-#                 'filename': pdf_filename
-#             })
-#         except Exception as e:
-#             return jsonify({'error': f'Conversion failed: {str(e)}'}), 500
-
-#     return jsonify({'error': 'Invalid file type. Only DOC/DOCX allowed.'}), 400
-
-# @word_to_pdf_bp.route('/word_to_pdf/download/<filename>', methods=['GET'])
-# def download_file(filename):
-#     file_path = os.path.join(word_to_pdf_bp.output_folder, filename)
-
-#     if os.path.exists(file_path):
-#         response = send_file(file_path, as_attachment=True)
-
-#         def delete_after_sending():
-#             try:
-#                 os.remove(file_path)
-#             except:
-#                 pass
-
-#         response.call_on_close(delete_after_sending)
-#         return response
-
-#     return jsonify({'error': 'File not found'}), 404
-
-
-
-
-
-
-
-
-
-
-
 
 import os
 import tempfile
 import shutil
 import io
+import textwrap
 from flask import Blueprint, render_template, request, send_file, jsonify, url_for
 from werkzeug.utils import secure_filename
 from docx import Document
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
+from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.platypus import Paragraph, SimpleDocTemplate, Spacer
+from reportlab.lib.units import inch
 from PIL import Image
-import pythoncom
 
 word_to_pdf_bp = Blueprint('word_to_pdf', __name__, template_folder='../templates')
 
@@ -130,25 +47,32 @@ def clear_directory(directory):
             print(f'Failed to delete {file_path}. Reason: {e}')
 
 def convert_docx_to_pdf(docx_path, pdf_path):
-    """Convert DOCX to PDF using python-docx and reportlab"""
+    """Convert DOCX to PDF with proper formatting and text wrapping"""
     document = Document(docx_path)
-    c = canvas.Canvas(pdf_path, pagesize=letter)
-    width, height = letter
+    styles = getSampleStyleSheet()
+    doc = SimpleDocTemplate(pdf_path, pagesize=letter,
+                        rightMargin=72, leftMargin=72,
+                        topMargin=72, bottomMargin=72)
     
-    y_position = height - 50  # Start position
+    Story = []
+    style = styles["Normal"]
+    style.fontName = "Helvetica"
+    style.fontSize = 12
+    style.leading = 14
     
     for para in document.paragraphs:
-        text = para.text
-        if text.strip():  # Only process non-empty paragraphs
-            c.setFont("Helvetica", 12)
-            c.drawString(50, y_position, text)
-            y_position -= 20
-            
-            if y_position < 50:  # New page if we reach bottom
-                c.showPage()
-                y_position = height - 50
+        text = para.text.strip()
+        if text:
+            # Handle bullet points and numbering
+            if para.style.name.startswith('List'):
+                text = "• " + text
+                
+            # Create paragraph with proper wrapping
+            p = Paragraph(text, style)
+            Story.append(p)
+            Story.append(Spacer(1, 12))
     
-    c.save()
+    doc.build(Story)
 
 @word_to_pdf_bp.route('/word_to_pdf', methods=['GET'])
 def index():
