@@ -6,16 +6,20 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
     DEBIAN_FRONTEND=noninteractive
 
-# Install system dependencies
+# Install system dependencies including OpenCV requirements
 RUN apt-get update && apt-get install -y --no-install-recommends \
+    # For OpenCV
+    libgl1 \
+    libglib2.0-0 \
+    libsm6 \
+    libxrender1 \
+    libxext6 \
     # For document processing
     fonts-liberation \
     fonts-dejavu \
     # For image processing
     libjpeg-dev \
     zlib1g-dev \
-    # For PDF handling
-    libpq-dev \
     # Clean up
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
@@ -23,7 +27,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 # Set working directory
 WORKDIR /app
 
-# Install Python dependencies first (for better layer caching)
+# Install Python dependencies
 COPY requirements.txt .
 RUN pip install --upgrade pip && \
     pip install --no-cache-dir -r requirements.txt
@@ -34,7 +38,7 @@ COPY . .
 # Create necessary directories
 RUN mkdir -p /app/uploads /app/outputs
 
-# Set permissions for the directories
+# Set permissions
 RUN chmod -R 777 /app/uploads /app/outputs
 
 # Expose the Flask port
