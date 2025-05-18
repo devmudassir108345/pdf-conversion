@@ -1,31 +1,48 @@
-# Base image
+# Use official Python slim image
 FROM python:3.10-slim
 
-# Set work directory
-WORKDIR /app
+# Set environment variables
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    DEBIAN_FRONTEND=noninteractive
 
-# Install LibreOffice and required system libraries
-RUN apt-get update && apt-get install -y \
-    libreoffice \
-    libgl1 \
-    libglib2.0-0 \
-    libsm6 \
-    libxext6 \
-    libxrender1 \
-    poppler-utils \
+# Install system dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    # For document processing
+    fonts-liberation \
+    fonts-dejavu \
+    # For image processing
+    libjpeg-dev \
+    zlib1g-dev \
+    # For PDF handling
+    libpq-dev \
+    # Clean up
+    && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy dependency list
+# Set working directory
+WORKDIR /app
+
+# Install Python dependencies first (for better layer caching)
 COPY requirements.txt .
+RUN pip install --upgrade pip && \
+    pip install --no-cache-dir -r requirements.txt
 
-# Install Python dependencies
-RUN pip install --no-cache-dir -r requirements.txt
-
-# Copy app code
+# Copy application code
 COPY . .
 
-# Expose port (optional: if using Flask app)
+# Create necessary directories
+RUN mkdir -p /app/uploads /app/outputs
+
+# Set permissions for the directories
+RUN chmod -R 777 /app/uploads /app/outputs
+
+# Expose the Flask port
 EXPOSE 5000
 
-# Run using Gunicorn
-CMD ["gunicorn", "--bind", "0.0.0.0:5000", "app:app"]
+# Health check
+HEALTHCHECK --interval=30s --timeout=3s \
+    CMD curl -f http://localhost:5000/ || exit 1
+
+# Run the application
+CMD ["gunicorn", "--bind", "0.0.0.0:5000", "--workers", "4", "app:app"]
